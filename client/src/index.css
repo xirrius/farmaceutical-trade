@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+
+  /* Breakpoints */
+  --xs: 360px;
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
+  --xxl: 1400px;
+  --xxxl: 1600px;
+
+  --gutter: 1rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.05);
+  scrollbar-width: thin;
+}
+
+body {
+  background-color: rgba(255, 246, 231, 0.741);
+}
+
+/* Change colors */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  color: #3e3e3e; /* Set arrow color */
+}
+
+.container {
+  max-width: 100%;
+  width: 100%;
+  padding: 0 var(--gutter);
+  margin: 0 auto;
+  /* display: block; */
+}
+
+@media screen and (min-width: 576px) {
+  .container {
+    max-width: calc(var(--sm) - calc(var(--gutter) * 2));
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: calc(var(--md) - calc(var(--gutter) * 2));
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .container {
+    max-width: calc(var(--lg) - calc(var(--gutter) * 2));
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    max-width: calc(var(--xl) - calc(var(--gutter) * 2));
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .container {
+    max-width: calc(var(--xxl) - calc(var(--gutter) * 2));
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .container {
+    max-width: calc(var(--xxxl) - calc(var(--gutter) * 2));
+  }
+}
+
+.container--fluid {
+  width: 100%;
+}
