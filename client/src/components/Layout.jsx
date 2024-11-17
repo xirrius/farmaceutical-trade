@@ -193,7 +193,7 @@ const Layout = () => {
       </div>
 
       <div className="bg-black w-full h-[50px] flex items-center justify-center text-white text-xs">
-        @ farmaceutical trade
+        @farmaceutical_trade
       </div>
     </div>
   );
