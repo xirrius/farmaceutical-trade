@@ -101,7 +101,7 @@ const Home = () => {
         </div>
         <div className="mt-16 relative">
           <img
-            src="./cta.png"
+            src="./cta.jpg"
             alt=""
             className="w-full h-[400px] object-cover"
           />
