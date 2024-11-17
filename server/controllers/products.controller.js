@@ -182,103 +182,28 @@ const getProducts = async (req, res) => {
 };
 
 const getMyProducts = async (req, res) => {
-  const {
-    page,
-    limit,
-    sortBy = "created_at",
-    order = "desc",
-    search,
-    category,
-    subcategory,
-    condition,
-    status,
-    maxPrice,
-    maxQuantity,
-  } = req.query;
+  const user = await pool.query("SELECT * FROM users WHERE user_id = $1", [
+    req.user,
+  ]);
 
-  const pageNum = page ? parseInt(page) : 1;
-  const limitNum = limit ? parseInt(limit) : 5;
-  const offset = (pageNum - 1) * limitNum;
-
-  let countQuery = "SELECT COUNT(*) FROM products WHERE 1=1";
-  let baseQuery =
-    "SELECT products.*, users.* FROM products JOIN users ON products.user_id = users.user_id WHERE products.user_id = $1";
-
-  let queryParams = [req.user];
-  let countParams = [req.user];
-
-  if (search) {
-    baseQuery += ` AND product_name ILIKE $${queryParams.length + 1}`;
-    queryParams.push(`%${search}%`);
-
-    countQuery += ` AND product_name ILIKE $${countParams.length + 1}`;
-    countParams.push(`%${search}%`);
+  if (!user.rows[0]) {
+    throw new NotFoundError("User not found.");
   }
 
-  if (category) {
-    baseQuery += ` AND category_id = $${queryParams.length + 1}`;
-    queryParams.push(category);
-    countQuery += ` AND category_id = $${countParams.length + 1}`;
-    countParams.push(category);
-  }
-  if (subcategory) {
-    baseQuery += ` AND subcategory_id = $${queryParams.length + 1}`;
-    queryParams.push(subcategory);
-    countQuery += ` AND subcategory_id = $${countParams.length + 1}`;
-    countParams.push(subcategory);
-  }
-  if (subcategory) {
-    baseQuery += ` AND subcategory_id = $${queryParams.length + 1}`;
-    queryParams.push(subcategory);
-    countQuery += ` AND subcategory_id = $${countParams.length + 1}`;
-    countParams.push(subcategory);
-  }
-  if (condition) {
-    baseQuery += ` AND LOWER(condition) = LOWER($${queryParams.length + 1})`;
-    queryParams.push(condition);
-    countQuery += ` AND condition = $${countParams.length + 1}`;
-    countParams.push(condition);
-  }
-  if (status) {
-    baseQuery += ` AND LOWER(status) = LOWER($${queryParams.length + 1})`;
-    queryParams.push(status);
-    countQuery += ` AND status = $${countParams.length + 1}`;
-    countParams.push(status);
-  }
-  if (maxPrice) {
-    baseQuery += ` AND price <= $${queryParams.length + 1}`;
-    queryParams.push(maxPrice);
-    countQuery += ` AND price <= $${countParams.length + 1}`;
-    countParams.push(maxPrice);
-  }
+  const result = await pool.query("SELECT * FROM products WHERE user_id = $1", [
+    req.user,
+  ]);
 
-  if (maxQuantity) {
-    baseQuery += ` AND quantity <= $${queryParams.length + 1}`;
-    queryParams.push(maxQuantity);
-    countQuery += ` AND quantity <= $${countParams.length + 1}`;
-    countParams.push(maxQuantity);
-  }
-
-  if (sortBy) {
-    const sortOrder = order && order.toLowerCase() === "desc" ? "DESC" : "ASC";
-    baseQuery += ` ORDER BY products.${sortBy} ${sortOrder}`;
-  } else {
-    baseQuery += ` ORDER BY products.created_at ASC`;
-  }
-
-  baseQuery += ` LIMIT $${queryParams.length + 1} OFFSET $${
-    queryParams.length + 2
-  }`;
-  queryParams.push(limitNum, offset);
-
-  const result = await pool.query(baseQuery, queryParams);
-  const totalResult = await pool.query(countQuery, countParams);
-  if (!result.rows[0]) {
+  if (result.rows.length === 0) {
     throw new NotFoundError("No products found.");
   }
 
   const productsWithDetails = await Promise.all(
     result.rows.map(async (product) => {
+      const userResult = await pool.query(
+        "SELECT * FROM users WHERE user_id = $1",
+        [product.user_id]
+      );
       const categoryResult = await pool.query(
         "SELECT * FROM categories WHERE category_id = $1",
         [product.category_id]
@@ -291,8 +216,10 @@ const getMyProducts = async (req, res) => {
         "SELECT * FROM media WHERE product_id = $1",
         [product.product_id]
       );
+
       return {
         ...product,
+        user: userResult.rows[0] || null,
         category: categoryResult.rows[0] || null,
         subcategory: subcategoryResult.rows[0] || null,
         media: mediaResult.rows || [],
@@ -300,10 +227,7 @@ const getMyProducts = async (req, res) => {
     })
   );
 
-  res.status(StatusCodes.OK).json({
-    result: productsWithDetails,
-    total: parseInt(totalResult.rows[0].count),
-  });
+  return res.status(200).json(productsWithDetails);
 };
 
 const getUserProducts = async (req, res) => {

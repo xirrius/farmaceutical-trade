@@ -1,5 +1,5 @@
 import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react";
-import { MapPin } from "lucide-react";
+import { MapPin, Undo2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UpdateProfile from "../components/UpdateProfile";
@@ -110,8 +110,9 @@ const Profile = () => {
           </div>
           <Button
             color="danger"
-            className="w-32 md:w-64"
+            className="w-32 md:w-64 mb-8"
             onClick={() => navigate(-1)}
+            startContent={<Undo2 />}
           >
             Go Back
           </Button>

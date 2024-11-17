@@ -41,22 +41,37 @@ const messageSlice = createSlice({
   },
   reducers: {
     addMessage: (state, action) => {
-      const { receiver_id, message } = action.payload;
-      const conversation = state.conversations.find(
-        (conv) => conv.user_id === receiver_id
-      );
-      if (conversation) {
-        conversation.messages.push(message);
-      }
+      state.activeConversation = {
+        ...state.activeConversation,
+        conversation: [
+          ...(state.activeConversation.conversation || []),
+          action.payload,
+        ],
+      };
     },
     setOnlineUsers: (state, action) => {
       state.onlineUsers = action.payload;
+    },
+    markMessageAsRead: (state, action) => {
+      const { message_id } = action.payload;
+      const message = state.activeConversation.conversation.find(
+        (msg) => msg.message_id === message_id
+      );
+      if (message) {
+        message.is_read = true;
+      }
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(sendMessageAsync.fulfilled, (state, action) => {
-        state.activeConversation.push(action.payload);
+        state.activeConversation = {
+          ...state.activeConversation,
+          conversation: [
+            ...(state.activeConversation.conversation || []),
+            action.payload,
+          ],
+        };
       })
       .addCase(fetchConversation.fulfilled, (state, action) => {
         state.activeConversation = action.payload;
@@ -67,6 +82,6 @@ const messageSlice = createSlice({
   },
 });
 
-export const { addMessage, setOnlineUsers } = messageSlice.actions;
+export const { addMessage, setOnlineUsers, markMessageAsRead } = messageSlice.actions;
 
 export default messageSlice.reducer;

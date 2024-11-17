@@ -7,7 +7,7 @@ async function sendMessage(req, res) {
   const { content } = req.body;
   const { receiver_id } = req.params;
   const sender_id = req.user;
-
+  
   const otherUser = await pool.query("SELECT * FROM users WHERE user_id = $1", [
     receiver_id,
   ]);

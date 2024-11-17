@@ -49,7 +49,8 @@ async function updateTransactionStatus(req, res) {
   const { transaction_id } = req.params;
   const { status } = req.body;
   const seller_id = req.user;
-
+  console.log(req.body);
+  
   if (status !== "completed" && status !== "cancelled") {
     throw new BadRequestError("Could not update the transaction.");
   }
@@ -111,45 +112,126 @@ async function getTransactions(req, res) {
   const { status, order, type } = req.query;
   const userId = req.user;
 
-  let baseQuery = `SELECT * FROM transactions WHERE 1=1`;
   let queryParams = [];
+  // Base query to get transactions
+  let baseQuery = `
+    SELECT 
+      t.*, 
+      CASE 
+        WHEN t.seller_id = $${queryParams.length + 1} THEN 'seller' 
+        ELSE 'buyer' 
+      END AS role 
+    FROM transactions t 
+    WHERE 1=1
+  `;
 
+  // Filter by status if provided
+  
+  // Filter by type (buyer or seller)
+  if (type === "seller") {
+    baseQuery += ` AND t.seller_id = $${queryParams.length + 1}`;
+  } else {
+    baseQuery += ` AND t.buyer_id = $${queryParams.length + 1}`;
+  }
+  queryParams.push(userId);
+  
   if (status) {
-    baseQuery += ` AND status = $${queryParams.length + 1}`;
+    baseQuery += ` AND t.status = $${queryParams.length + 1}`;
     queryParams.push(status);
   }
 
-  if (type === "seller") {
-    baseQuery += ` AND seller_id = $${queryParams.length + 1}`;
-  } else {
-    baseQuery += ` AND buyer_id = $${queryParams.length + 1}`;
-  }
-  queryParams.push(userId);
-
+  // Order by updated_at
   const sortOrder = order && order.toLowerCase() === "asc" ? "ASC" : "DESC";
-  baseQuery += ` ORDER BY updated_at ${sortOrder}`;
+  baseQuery += ` ORDER BY t.updated_at ${sortOrder}`;
 
-  const result = await pool.query(baseQuery, queryParams);
+  // Execute base query
+  const transactions = await pool.query(baseQuery, queryParams);
 
-  if (result.rows.length === 0) {
+  if (transactions.rows.length === 0) {
     throw new NotFoundError("No transactions found.");
   }
 
-  return res.status(StatusCodes.OK).json(result.rows);
+  // Fetch additional details for each transaction
+  const enrichedTransactions = await Promise.all(
+    transactions.rows.map(async (transaction) => {
+      const isSeller = transaction.role === "seller";
+      const otherPartyId = isSeller
+        ? transaction.buyer_id
+        : transaction.seller_id;
+
+      // Fetch other party details
+      const otherPartyQuery = `SELECT user_id, name, email, city, state, profile_pic FROM users WHERE user_id = $1`;
+      const otherPartyResult = await pool.query(otherPartyQuery, [
+        otherPartyId,
+      ]);
+      const otherParty = otherPartyResult.rows[0];
+
+      // Fetch product details
+      const productQuery = `SELECT product_id, product_name, unit FROM products WHERE product_id = $1`;
+      const productResult = await pool.query(productQuery, [
+        transaction.product_id,
+      ]);
+      const product = productResult.rows[0];
+
+      // Append other party and product details to the transaction
+      return {
+        ...transaction,
+        otherParty,
+        product,
+      };
+    })
+  );
+
+  return res.status(StatusCodes.OK).json(enrichedTransactions);
 }
 
 async function getTransaction(req, res) {
   const { transaction_id } = req.params;
-  const result = await pool.query(
+  const userId = req.user; // Assuming the authenticated user's ID is available in req.user
+
+  // Fetch the transaction
+  const transactionResult = await pool.query(
     "SELECT * FROM transactions WHERE transaction_id = $1",
     [transaction_id]
   );
-  if (result.rows.length === 0) {
+
+  if (transactionResult.rows.length === 0) {
     throw new NotFoundError("Transaction not found.");
   }
+
+  const transaction = transactionResult.rows[0];
+
+  // Determine the role (buyer or seller)
+  const role = transaction.seller_id === userId ? "seller" : "buyer";
+
+  // Fetch other party details
+  const otherPartyId =
+    role === "seller" ? transaction.buyer_id : transaction.seller_id;
+  const otherPartyQuery = `SELECT user_id, name, email, city, state FROM users WHERE user_id = $1`;
+  const otherPartyResult = await pool.query(otherPartyQuery, [otherPartyId]);
+  const otherParty = otherPartyResult.rows[0];
+
+  // Fetch product details
+  const productQuery = `SELECT product_id, product_name FROM products WHERE product_id = $1`;
+  const productResult = await pool.query(productQuery, [
+    transaction.product_id,
+  ]);
+  const product = productResult.rows[0];
+
+  // Build the enriched transaction response
+  const enrichedTransaction = {
+    ...transaction,
+    role,
+    otherParty,
+    product,
+  };
+
   return res
     .status(StatusCodes.OK)
-    .json({ message: "Transaction fetched.", transaction: result.rows[0] });
+    .json({
+      message: "Transaction fetched.",
+      transaction: enrichedTransaction,
+    });
 }
 
 module.exports = {

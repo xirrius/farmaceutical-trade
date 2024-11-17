@@ -1,12 +1,12 @@
 import { authInstance } from "../utils/axios";
 
 export const sendMessage = async (receiver_id, content) => {
-  try {
+  try {  
     const response = await authInstance.post(
       `/messages/${receiver_id}`,
-      content
+      {content}
     );
-    return response.data;
+    return response.data.messageData;
   } catch (error) {
     throw new Error(
       error.response.data.message || "Error sending the message."

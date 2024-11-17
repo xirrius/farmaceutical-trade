@@ -12,10 +12,10 @@ export const createTransaction = async (transactionData) => {
 };
 
 export const updateTransactionStatus = async (transaction_id, status) => {
-  try {
+  try {    
     const response = await authInstance.patch(
       `/transactions/${transaction_id}/status`,
-      status
+      {status}
     );
     return response.data;
   } catch (error) {

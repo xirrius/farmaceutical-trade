@@ -37,25 +37,22 @@ const Product = () => {
   const [selected, setSelected] = useState("buy");
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-   const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
-  const [rating, setRating] = useState()
+  const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
+  const [rating, setRating] = useState();
   const [reviewText, setReviewText] = useState("");
-   const handleSecondModalOpen = () => setIsSecondModalOpen(true);
-   const handleSecondModalClose = () => setIsSecondModalOpen(false);
+  const handleSecondModalOpen = () => setIsSecondModalOpen(true);
+  const handleSecondModalClose = () => setIsSecondModalOpen(false);
   const {
     register: registerBuy,
     handleSubmit: handleSubmitBuy,
     formState: { errors: errorsBuy },
   } = useForm();
-
   const {
     register: registerRent,
     handleSubmit: handleSubmitRent,
     formState: { errors: errorsRent },
   } = useForm();
-
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [reviews, setReviews] = useState([]);
@@ -71,7 +68,7 @@ const Product = () => {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchReviews();
   }, [id]);
@@ -115,19 +112,23 @@ const Product = () => {
       onOpen();
       return;
     } else {
-      handleSecondModalOpen()
+      handleSecondModalOpen();
     }
-  }
+  };
+  
   const handleAddReview = async () => {
     try {
-      const data = await addReview(product.product_id, {rating: parseInt(rating), review_text:reviewText})
-      toast.success(data.message)
-      fetchReviews()
+      const data = await addReview(product.product_id, {
+        rating: parseInt(rating),
+        review_text: reviewText,
+      });
+      toast.success(data.message);
+      fetchReviews();
     } catch (error) {
       console.log(error);
-      toast.error(error.message)
+      toast.error(error.message);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -154,8 +155,8 @@ const Product = () => {
         </div>
         <div className="w-[100%] md:w-[50%]">
           <User
-          className="cursor-pointer"
-            name={product.user.name}
+            className="cursor-pointer"
+            name={product?.user.name}
             description={`${product.user.city}, ${product.user.state}`}
             avatarProps={{
               src: product.user.profile_pic,
@@ -204,7 +205,11 @@ const Product = () => {
             {product.quantity} {product.unit}
           </Chip>
           <Spacer y={6} />
-          <Button color="primary" onClick={handleAddReviewModal} startContent={<Plus />}>
+          <Button
+            color="primary"
+            onClick={handleAddReviewModal}
+            startContent={<Plus />}
+          >
             Add Review
           </Button>
           <Modal
@@ -389,12 +394,20 @@ const Product = () => {
           </Tab>
         </Tabs>
       ) : (
-        <Button onClick={() => navigate(`/products/${product.product_id}/edit`)} className="w-32" startContent={<Pencil/>}>
+        <Button
+          onClick={() => navigate(`/products/${product.product_id}/edit`)}
+          className="w-32"
+          startContent={<Pencil />}
+        >
           Edit Listing
         </Button>
       )}
       <Divider className="my-4" />
-      <Button className="w-32 mb-8" onClick={() => navigate(-1)} startContent={<Undo2/>}>
+      <Button
+        className="w-32 mb-8"
+        onClick={() => navigate(-1)}
+        startContent={<Undo2 />}
+      >
         Go Back
       </Button>
       <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>

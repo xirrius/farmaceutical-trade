@@ -31,13 +31,18 @@ const getRentals = async (req, res) => {
   const { status, type } = req.query;
   const userId = req.user;
 
-  let baseQuery = `SELECT * FROM rentals WHERE 1=1`;
   let queryParams = [];
 
-  if (status) {
-    baseQuery += ` AND status = $${queryParams.length + 1}`;
-    queryParams.push(status);
-  }
+  let baseQuery = `
+    SELECT 
+      t.*, 
+      CASE 
+        WHEN t.owner_id = $${queryParams.length + 1} THEN 'owner' 
+        ELSE 'renter' 
+      END AS role 
+    FROM rentals t 
+    WHERE 1=1
+  `;
 
   if (type === "owner") {
     baseQuery += ` AND owner_id = $${queryParams.length + 1}`;
@@ -45,6 +50,11 @@ const getRentals = async (req, res) => {
     baseQuery += ` AND renter_id = $${queryParams.length + 1}`;
   }
   queryParams.push(userId);
+
+  if (status) {
+    baseQuery += ` AND status = $${queryParams.length + 1}`;
+    queryParams.push(status);
+  }
 
   baseQuery += ` ORDER BY updated_at DESC`;
 
@@ -54,7 +64,33 @@ const getRentals = async (req, res) => {
     throw new NotFoundError("No rental entries found.");
   }
 
-  return res.status(StatusCodes.OK).json(result.rows);
+  const enrichedRentals = await Promise.all(
+    result.rows.map(async (rental) => {
+      const isOwner = rental.role === "owner";
+      const otherPartyId = isOwner ? rental.renter_id : rental.owner_id;
+
+      // Fetch other party details
+      const otherPartyQuery = `SELECT user_id, name, email, city, state, profile_pic FROM users WHERE user_id = $1`;
+      const otherPartyResult = await pool.query(otherPartyQuery, [
+        otherPartyId,
+      ]);
+      const otherParty = otherPartyResult.rows[0];
+
+      // Fetch product details
+      const productQuery = `SELECT product_id, product_name, unit FROM products WHERE product_id = $1`;
+      const productResult = await pool.query(productQuery, [rental.product_id]);
+      const product = productResult.rows[0];
+
+      // Append other party and product details to the transaction
+      return {
+        ...rental,
+        otherParty,
+        product,
+      };
+    })
+  );
+
+  return res.status(StatusCodes.OK).json(enrichedRentals);
 };
 
 const getRental = async (req, res) => {
@@ -66,9 +102,26 @@ const getRental = async (req, res) => {
   if (result.rows.length === 0) {
     throw new NotFoundError("Rental entry not found.");
   }
+
+  const rental = result.rows[0];
+
+  const role = rental.owner_id === req.user ? "owner" : "renter";
+
+  // Fetch other party details
+  const otherPartyId = role === "owner" ? rental.renter_id : rental.owner_id;
+  const otherPartyQuery = `SELECT user_id, name, email, city, state FROM users WHERE user_id = $1`;
+  const otherPartyResult = await pool.query(otherPartyQuery, [otherPartyId]);
+  const otherParty = otherPartyResult.rows[0];
+
+  const enrichedRental = {
+    ...rental,
+    role,
+    otherParty,
+  };
+
   return res
     .status(StatusCodes.OK)
-    .json({ message: "Rental entry fetched.", rental: result.rows[0] });
+    .json({ message: "Rental entry fetched.", rental: enrichedRental });
 };
 
 module.exports = { updateRentalStatus, getRentals, getRental };

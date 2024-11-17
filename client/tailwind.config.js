@@ -16,7 +16,7 @@ export default {
         highlight: "#04DDB2",
       },
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        mont: ["Montserrat", "sans-serif"],
         sans: ["Arial", "Helvetica", "sans-serif"],
       },
     },

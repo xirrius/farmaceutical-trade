@@ -303,7 +303,10 @@ const Products = () => {
       <div className="flex flex-wrap gap-4 py-4 items-center justify-center">
         {products &&
           products.map((product) => (
-            <Card className="" key={product.product_id}>
+            <Card
+              className="w-full md:w-[320px] md:h-[410px] lg:w-[420px] lg:h-[520px]"
+              key={product.product_id}
+            >
               <CardHeader className="flex-col items-start">
                 <User
                   className="cursor-pointer"
@@ -320,7 +323,7 @@ const Products = () => {
                     )
                   }
                 />
-                <h1 className="text-xl sm:text-2xl font-black p-3 pb-0">
+                <h1 className="text-xl lg:text-2xl font-black p-3 pb-0">
                   {product.product_name}
                 </h1>
                 <Chip
@@ -339,7 +342,7 @@ const Products = () => {
                       <img
                         src={product.media[0].url}
                         alt="Product media"
-                        className="w-72 sm:w-96 rounded-xl"
+                        className="w-full rounded-xl h-[240px] md:h-[180px] lg:h-[240px] object-cover"
                       />
                     ) : product.media[0].media_type === "video" ? (
                       <video
@@ -348,7 +351,7 @@ const Products = () => {
                         loop
                         controls
                         src={product.media[0].url}
-                        className="w-72 sm:w-96 rounded-xl"
+                        className="w-full rounded-xl h-[240px] md:h-[180px] lg:h-[240px] object-cover"
                       />
                     ) : null)}
                 </div>

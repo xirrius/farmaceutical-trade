@@ -44,7 +44,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-green-400 h-screen flex justify-center items-center p-2">
+    <div className="bg-green-400 bg-[url('/bg.jpg')] bg-cover h-screen flex justify-center items-center p-2">
       <Card className="backdrop-blur-xl bg-transparent text-white  p-3 md:p-10 w-[100%] md:w-[80%] lg:w-[60%]">
         <CardHeader className="text-2xl">Login Here.</CardHeader>
         <CardBody>

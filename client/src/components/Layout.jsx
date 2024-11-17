@@ -80,7 +80,7 @@ const Layout = () => {
         </NavbarMenu>
         <NavbarContent as="div" justify="end">
           <NavbarItem className="hidden md:flex">
-            <NavLink color="foreground" to={'/'}>
+            <NavLink color="foreground" to={"/"}>
               Home
             </NavLink>
           </NavbarItem>
@@ -190,6 +190,10 @@ const Layout = () => {
 
       <div>
         <Outlet />
+      </div>
+
+      <div className="bg-black w-full h-[50px] flex items-center justify-center text-white text-xs">
+        @ farmaceutical trade
       </div>
     </div>
   );

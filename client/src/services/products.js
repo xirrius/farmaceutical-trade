@@ -43,34 +43,9 @@ export const getProducts = async ({
   }
 };
 
-export const getMyProducts = async ({
-  page,
-  limit,
-  sortBy,
-  order,
-  search,
-  category,
-  subcategory,
-  condition,
-  status,
-  maxPrice,
-  maxQuantity,
-}) => {
+export const getMyProducts = async () => {
   try {
-    const queryParams = new URLSearchParams({
-    page,
-    limit,
-    sortBy,
-    order,
-    search,
-    category,
-    subcategory,
-    condition,
-    status,
-    maxPrice,
-    maxQuantity,
-    }).toString();
-    const response = await authInstance.get(`/products/my?${queryParams}`);
+    const response = await authInstance.get(`/products/my`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || "Error fetching products");

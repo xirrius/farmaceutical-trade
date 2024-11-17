@@ -82,3 +82,7 @@ body {
 .container--fluid {
   width: 100%;
 }
+
+.fit-content {
+  width: fit-content !important;
+}

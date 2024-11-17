@@ -49,7 +49,7 @@ const Register = () => {
   const password = watch("password");
 
   return (
-    <div className="p-2 h-screen flex justify-center items-center bg-green-300">
+    <div className="p-2 h-screen flex justify-center items-center bg-green-300 bg-[url('/bg.jpg')] bg-cover">
       <Card className="backdrop-blur-xl bg-transparent text-white p-3 md:p-10 w-[100%] md:w-[80%] lg:w-[60%]">
         <CardHeader className="text-2xl">Register Here.</CardHeader>
         <CardBody>

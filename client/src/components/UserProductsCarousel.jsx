@@ -16,7 +16,7 @@ const UserProductsCarousel = ({ userProducts }) => {
   return (
     <Swiper
       spaceBetween={1}
-      slidesPerView={1}
+      slidesPerView={2}
       navigation={true}
       modules={[Navigation, Pagination]}
       pagination={{

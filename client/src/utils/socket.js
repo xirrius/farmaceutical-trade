@@ -1,5 +1,9 @@
 import io from "socket.io-client";
-import { addMessage, setOnlineUsers } from "../redux/state/messageSlice";
+import {
+  addMessage,
+  setOnlineUsers,
+  markMessageAsRead,
+} from "../redux/state/messageSlice";
 import store from "../redux/store";
 
 let socket = null;
@@ -34,6 +38,13 @@ export const markAsRead = (message_id) => {
   if (socket) {
     socket.emit("markAsRead", { message_id });
   }
+};
+
+export const handleMarkAsRead = (message_id) => {
+  // Emit event to the server
+  markAsRead(message_id);
+  // Optimistically update the UI
+  store.dispatch(markMessageAsRead({ message_id }));
 };
 
 export default socket;
