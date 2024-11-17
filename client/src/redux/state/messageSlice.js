@@ -76,6 +76,9 @@ const messageSlice = createSlice({
       .addCase(fetchConversation.fulfilled, (state, action) => {
         state.activeConversation = action.payload;
       })
+      .addCase(fetchConversation.rejected, (state, action) => {
+        state.activeConversation = [];
+      })
       .addCase(fetchAllConversations.fulfilled, (state, action) => {
         state.conversations = action.payload;
       });

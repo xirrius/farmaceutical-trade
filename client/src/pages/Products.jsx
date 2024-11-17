@@ -20,8 +20,11 @@ import {
   Spacer,
   User,
   Chip,
+  Spinner,
 } from "@nextui-org/react";
 import { useSelector } from "react-redux";
+import NotFound from "./NotFound";
+import { ArrowLeft } from "lucide-react";
 const Products = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,6 +42,7 @@ const Products = () => {
   const [status, setStatus] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [maxQuantity, setMaxQuantity] = useState("");
+  const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const { user } = useSelector((state) => state.auth);
 
@@ -60,23 +64,28 @@ const Products = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      console.log("rerun");
-
-      const data = await getProducts({
-        page,
-        limit,
-        sortBy,
-        order,
-        search,
-        category,
-        subcategory,
-        condition,
-        status,
-        maxPrice,
-        maxQuantity,
-      });
-      setProducts(data.result);
-      setTotalPages(Math.ceil(data.total / limit));
+      try {
+        console.log("rerun");
+        const data = await getProducts({
+          page,
+          limit,
+          sortBy,
+          order,
+          search,
+          category,
+          subcategory,
+          condition,
+          status,
+          maxPrice,
+          maxQuantity,
+        });
+        setProducts(data.result);
+        setTotalPages(Math.ceil(data.total / limit));
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchProducts();
   }, [
@@ -93,8 +102,27 @@ const Products = () => {
     maxQuantity,
   ]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner
+          size="lg"
+          label="Loading..."
+          color="danger"
+          labelColor="danger"
+        />
+      </div>
+    );
+  }
+
+  if (!products) {
+    return <NotFound />;
+  }
+
   return (
     <div className="container">
+        <Button isIconOnly onClick={() => navigate(-1)} className="my-2"><ArrowLeft/></Button>
+      <h1 className="text-2xl font-bold tracking-widest text-center my-4">Marketplace</h1>
       <div className="hidden sm:flex p-2 flex-col gap-2 justify-center">
         <Input
           isClearable

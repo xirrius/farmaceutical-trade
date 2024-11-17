@@ -3,7 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
-import { File, Image } from "lucide-react";
+import { Image } from "lucide-react";
 
 const ProductMediaCarousel = ({ media }) => {
   return (
@@ -16,8 +16,8 @@ const ProductMediaCarousel = ({ media }) => {
         dynamicBullets: true,
       }}
     >
-      {media.length > 0 &&
-        media.map((item, index) => (
+      {media?.length > 0 &&
+        media?.map((item, index) => (
           <SwiperSlide key={index} className="sm:p-10">
             <div className="h-[350px]">
               {item.media_type === "image" ? (
@@ -38,7 +38,7 @@ const ProductMediaCarousel = ({ media }) => {
             </div>
           </SwiperSlide>
         ))}
-      {media.length === 0 && (
+      {media?.length === 0 && (
         <div className="h-[350px] border-2 rounded-lg w-[100%] flex items-center justify-center">
           <Image />
         </div>

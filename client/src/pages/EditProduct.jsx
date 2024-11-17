@@ -122,7 +122,7 @@ const EditProduct = () => {
   return (
     <div className="container">
       <h1 className="font-bold p-4 pl-10 text-xl">Update Item Media</h1>
-      <Button className="ml-10" startContent={<Plus />} onPress={onOpen}>
+      <Button className="ml-10 mb-3" startContent={<Plus />} onPress={onOpen}>
         Add Media
       </Button>
       <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>

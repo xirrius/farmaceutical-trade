@@ -156,10 +156,10 @@ const Product = () => {
         <div className="w-[100%] md:w-[50%]">
           <User
             className="cursor-pointer"
-            name={product?.user.name}
-            description={`${product.user.city}, ${product.user.state}`}
+            name={product?.user?.name}
+            description={`${product?.user?.city}, ${product?.user?.state}`}
             avatarProps={{
-              src: product.user.profile_pic,
+              src: product?.user?.profile_pic,
             }}
             onClick={() =>
               navigate(
@@ -169,20 +169,20 @@ const Product = () => {
               )
             }
           />
-          <h1 className="text-2xl">{product.product_name}</h1>
+          <h1 className="text-2xl">{product?.product_name}</h1>
           <Spacer y={2} />
           <p className="text-lg text-gray-600">{product.description}</p>
           <Spacer y={2} />
           <div className="flex gap-4">
             <Chip color="warning" variant="flat" className="text-xs sm:text-sm">
-              {product?.category.category_name}
+              {product?.category?.category_name}
             </Chip>
             <Chip color="warning" variant="flat" className="text-xs sm:text-sm">
-              {product?.subcategory.subcategory_name}
+              {product?.subcategory?.subcategory_name}
             </Chip>
             <Chip color="warning" variant="flat" className="text-xs sm:text-sm">
-              {product.condition.charAt(0).toUpperCase() +
-                product.condition.slice(1)}
+              {product?.condition?.charAt(0).toUpperCase() +
+                product?.condition?.slice(1)}
             </Chip>
           </div>
           <Divider className="my-4" />
@@ -191,7 +191,7 @@ const Product = () => {
             variant="bordered"
             className="text-xs sm:text-sm"
           >
-            {product.status.charAt(0).toUpperCase() + product.status.slice(1)}
+            {product?.status?.charAt(0).toUpperCase() + product?.status?.slice(1)}
           </Chip>
           <Divider className="my-4" />
           <Chip

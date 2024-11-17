@@ -11,6 +11,7 @@ const Home = () => {
           <video
             src="./hero.mp4"
             autoPlay
+            muted
             loop
             className="w-full h-[600px] object-cover"
           >
@@ -100,7 +101,7 @@ const Home = () => {
         </div>
         <div className="mt-16 relative">
           <img
-            src="./cta.jpg"
+            src="./cta.png"
             alt=""
             className="w-full h-[400px] object-cover"
           />

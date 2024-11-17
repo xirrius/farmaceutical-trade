@@ -53,19 +53,6 @@ const Conversation = () => {
     fetchProfile();
   }, [id]);
 
-  // useEffect(() => {
-  //   const markAllAsRead = () => {
-  //     activeConversation?.conversation?.forEach((msg) => {
-  //       if (!msg.is_read && msg.sender_id !== user.user_id) {
-  //         handleMarkAsRead(msg.message_id);
-  //       }
-  //     });
-  //   };
-
-  //   markAllAsRead();
-  // }, [activeConversation, user]);
-
-
   const getUserStatus = (id) => {
     const isPresent =
       onlineUsers.find((item) => parseInt(item) === id) !== undefined;
