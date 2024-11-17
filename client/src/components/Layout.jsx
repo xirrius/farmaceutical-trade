@@ -18,19 +18,22 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import { useState } from "react";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, loading, user } = useSelector((state) => state.auth);
+  const {t} = useTranslation()
 
   const menuItems = isAuthenticated
     ? [
         ["Home", "/"],
         // ["Profile", "/profile"],
         ["Marketplace", "/products"],
-        ["View Listings", "/products/my"],
-        ["Add Listing", "/products/add"],
-        ["My Transactions", "/transactions/"],
+        ["View Items", "/products/my"],
+        ["Add Items", "/products/add"],
+        ["My Activity Log", "/transactions/"],
         ["My Rentals", "/rentals"],
         // ["Chat", "/conversations/"],
         // ["Log Out"],
@@ -54,7 +57,7 @@ const Layout = () => {
         <NavbarContent>
           <NavbarBrand className="gap-2 ">
             <img src="logo.png" alt="" className="w-10" />
-            <p className="font-bold text-inherit">Farmaceutical Trade</p>
+            <p className="font-bold text-inherit">{t("Farmaceutical Trade")}</p>
           </NavbarBrand>
         </NavbarContent>
 
@@ -73,7 +76,7 @@ const Layout = () => {
                 to={item[1]}
                 size="lg"
               >
-                {item[0]}
+                {t(item[0])}
               </NavLink>
             </NavbarMenuItem>
           ))}
@@ -81,12 +84,12 @@ const Layout = () => {
         <NavbarContent as="div" justify="end">
           <NavbarItem className="hidden md:flex">
             <NavLink color="foreground" to={"/"}>
-              Home
+              {t("Home")}
             </NavLink>
           </NavbarItem>
           <NavbarItem className="hidden sm:flex">
             <NavLink color="foreground" to="/products">
-              Marketplace
+              {t("Marketplace")}
             </NavLink>
           </NavbarItem>
           {loading && (
@@ -98,21 +101,25 @@ const Layout = () => {
             <>
               <NavbarItem>
                 <Button as={NavLink} color="primary" to="/login" variant="flat">
-                  Sign In
+                  {t("Sign In")}
                 </Button>
               </NavbarItem>
-              <NavbarItem className="hidden sm:flex">
+              <NavbarItem className="hidden md:flex">
                 <Button
                   as={NavLink}
                   color="primary"
                   to="/register"
                   variant="flat"
                 >
-                  Sign Up
+                  {t("Sign Up")}
                 </Button>
               </NavbarItem>
             </>
           )}
+          <NavbarMenuToggle
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            className="sm:hidden"
+          />
           {user && (
             <Dropdown placement="bottom-end">
               <DropdownTrigger>
@@ -128,63 +135,60 @@ const Layout = () => {
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
                 <DropdownItem key="profile" className="h-14 gap-2">
-                  <p className="font-semibold">Signed in as</p>
+                  <p className="font-semibold">{t("Signed in as")}</p>
                   <p className="font-semibold">{user?.email}</p>
                 </DropdownItem>
                 <DropdownItem
                   key="profile"
                   onClick={() => navigate("/profile")}
                 >
-                  My Profile
+                  {t("My Profile")}
                 </DropdownItem>
                 <DropdownItem
                   key="myprofile"
                   onClick={() => navigate("/conversations")}
                 >
-                  Chat
+                  {t("Chat")}
                 </DropdownItem>
                 <DropdownItem
                   key="chat"
                   onClick={() => navigate("/products/my")}
                   className="hidden sm:block"
                 >
-                  View Listings
+                  {t("View Items")}
                 </DropdownItem>
                 <DropdownItem
                   key="myproducts"
                   onClick={() => navigate("/products/add")}
                   className="hidden sm:block"
                 >
-                  Add Listing
+                  {t("Add Items")}
                 </DropdownItem>
                 <DropdownItem
                   key="addproduct"
                   onClick={() => navigate("/transactions")}
                   className="hidden sm:block"
                 >
-                  My Transactions
+                  {t("My Activity Log")}
                 </DropdownItem>
                 <DropdownItem
                   key="transactions"
                   onClick={() => navigate("/rentals")}
                   className="hidden sm:block"
                 >
-                  My Rentals
+                  {t("My Rentals")}
                 </DropdownItem>
                 <DropdownItem
                   key="logout"
                   color="danger"
                   onClick={handleLogout}
                 >
-                  Log Out
+                  {t("Log Out")}
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           )}
-          <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="sm:hidden"
-          />
+          <LanguageSwitcher />
         </NavbarContent>
       </Navbar>
 
@@ -193,7 +197,7 @@ const Layout = () => {
       </div>
 
       <div className="bg-black w-full h-[50px] flex items-center justify-center text-white text-xs">
-        @farmaceutical_trade
+        {t("@farmaceutical_trade")}
       </div>
     </div>
   );

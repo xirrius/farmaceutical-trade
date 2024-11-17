@@ -17,6 +17,7 @@ import { getProduct } from "../services/products";
 import ProductMediaCarousel from "./ProductMediaCarousel";
 import { Undo2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const Transaction = () => {
   const [transaction, setTransaction] = useState();
@@ -24,6 +25,7 @@ const Transaction = () => {
   const [loadingProduct, setLoadingProduct] = useState(false);
   const [product, setProduct] = useState();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { id } = useParams();
 
@@ -75,7 +77,7 @@ const Transaction = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -89,7 +91,7 @@ const Transaction = () => {
 
   return (
     <div className="container min-h-screen">
-      <h1 className="text-xl font-bold pt-4 pl-8">Activity</h1>
+      <h1 className="text-xl font-bold pt-4 pl-8">{t("Activity")}</h1>
 
       <div className="flex md:flex-row flex-col items-center justify-between gap-3 my-5">
         <div className="w-[100%] md:w-[50%]">
@@ -108,39 +110,44 @@ const Transaction = () => {
                   variant="flat"
                   className="text-xs sm:text-sm"
                 >
-                  {product?.category.category_name}
+                  {t(product?.category.category_name)}
                 </Chip>
                 <Chip
                   color="warning"
                   variant="flat"
                   className="text-xs sm:text-sm"
                 >
-                  {product?.subcategory.subcategory_name}
+                  {t(product?.subcategory.subcategory_name)}
                 </Chip>
                 <Chip
                   color="warning"
                   variant="flat"
                   className="text-xs sm:text-sm"
                 >
-                  {product.condition.charAt(0).toUpperCase() +
-                    product.condition.slice(1)}
+                  {t(
+                    product.condition.charAt(0).toUpperCase() +
+                      product.condition.slice(1)
+                  )}
                 </Chip>
               </div>
             </div>
             <p className="text-xs text-gray-700">
-              Last Updated:{" "}
+              {t("Last Updated:")}{" "}
               {new Date(transaction.updated_at).toLocaleTimeString()},{" "}
               {new Date(transaction.updated_at).toLocaleDateString()}
             </p>
           </div>
           <Divider className="my-4" />
           <div className="text-sm text-gray-500">
-            Date: {new Date(transaction.transaction_date).toLocaleDateString()}
+            {t("Date:")}{" "}
+            {new Date(transaction.transaction_date).toLocaleDateString()}
           </div>
           <div className=" flex gap-4 my-2">
-            <p>Amount: ₹{transaction.price}</p>
             <p>
-              Quantity: {transaction.quantity} {product.unit}
+              {t("Amount")}: ₹{transaction.price}
+            </p>
+            <p>
+              {t("Quantity")}: {transaction.quantity} {product.unit}
             </p>
           </div>
           <Divider className="my-4" />
@@ -153,7 +160,9 @@ const Transaction = () => {
                   transaction.transaction_type === "buy"
                 ? "Seller: "
                 : transaction.role === "seller" &&
-                  transaction.transaction_type === "rent" ? "Renter: " : "Buyer: "}
+                  transaction.transaction_type === "rent"
+                ? t("Renter: ")
+                : t("Buyer: ")}
             </p>
             <User
               className="cursor-pointer"
@@ -170,7 +179,7 @@ const Transaction = () => {
           <Divider className="my-4" />
           <div className="flex justify-between items-center text-sm text-gray-700 py-2">
             <div className="flex gap-4 items-center text-sm text-gray-700">
-              <p>Status: </p>
+              <p>{t("Status")}: </p>
               <Chip
                 variant="bordered"
                 color={
@@ -181,8 +190,10 @@ const Transaction = () => {
                     : `warning`
                 }
               >
-                {transaction.status.charAt(0).toUpperCase() +
-                  transaction.status.slice(1)}
+                {t(
+                  transaction.status.charAt(0).toUpperCase() +
+                    transaction.status.slice(1)
+                )}
               </Chip>
             </div>
           </div>
@@ -195,14 +206,14 @@ const Transaction = () => {
                   variant="bordered"
                   onClick={() => handleUpdateStatus("completed")}
                 >
-                  Mark As Completed
+                  {t("Mark As Completed")}
                 </Button>
                 <Button
                   color="danger"
                   variant="bordered"
                   onClick={() => handleUpdateStatus("cancelled")}
                 >
-                  Mark As Cancelled
+                  {t("Mark As Cancelled")}
                 </Button>
               </div>
             )}
@@ -213,7 +224,7 @@ const Transaction = () => {
             onClick={() => navigate(-1)}
             startContent={<Undo2 />}
           >
-            Go Back
+            {t("Go Back")}
           </Button>
         </div>
       </div>

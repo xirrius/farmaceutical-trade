@@ -31,6 +31,7 @@ import { toast } from "react-hot-toast";
 import ProductReviewCarousel from "./ProductReviewCarousel";
 import NotFound from "../pages/NotFound";
 import { Pencil, Plus, Undo2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Product = () => {
   const [quantity, setQuantity] = useState(1);
@@ -57,6 +58,7 @@ const Product = () => {
   const [product, setProduct] = useState({});
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const {t} = useTranslation()
 
   const fetchReviews = async () => {
     try {
@@ -99,11 +101,11 @@ const Product = () => {
     };
     try {
       const data = await createTransaction(requestData);
-      toast.success("Request made successfully.");
+      toast.success(t("Request made successfully."));
       console.log(data.message);
     } catch (error) {
       console.log(error);
-      toast.error("Request failed");
+      toast.error(t("Request failed"));
     }
   }
 
@@ -135,7 +137,7 @@ const Product = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -175,14 +177,14 @@ const Product = () => {
           <Spacer y={2} />
           <div className="flex gap-4">
             <Chip color="warning" variant="flat" className="text-xs sm:text-sm">
-              {product?.category?.category_name}
+              {t(product?.category?.category_name)}
             </Chip>
             <Chip color="warning" variant="flat" className="text-xs sm:text-sm">
-              {product?.subcategory?.subcategory_name}
+              {t(product?.subcategory?.subcategory_name)}
             </Chip>
             <Chip color="warning" variant="flat" className="text-xs sm:text-sm">
-              {product?.condition?.charAt(0).toUpperCase() +
-                product?.condition?.slice(1)}
+              {t(product?.condition?.charAt(0).toUpperCase() +
+                product?.condition?.slice(1))}
             </Chip>
           </div>
           <Divider className="my-4" />
@@ -191,7 +193,7 @@ const Product = () => {
             variant="bordered"
             className="text-xs sm:text-sm"
           >
-            {product?.status?.charAt(0).toUpperCase() + product?.status?.slice(1)}
+            {t(product?.status?.charAt(0).toUpperCase() + product?.status?.slice(1))}
           </Chip>
           <Divider className="my-4" />
           <Chip
@@ -210,7 +212,7 @@ const Product = () => {
             onClick={handleAddReviewModal}
             startContent={<Plus />}
           >
-            Add Review
+            {t("Add Review")}
           </Button>
           <Modal
             backdrop={"blur"}
@@ -220,11 +222,11 @@ const Product = () => {
             <ModalContent>
               {(onClose) => (
                 <>
-                  <ModalHeader>Leave a Review</ModalHeader>
+                  <ModalHeader>{t("Leave a Review")}</ModalHeader>
                   <ModalBody>
                     <form className="flex flex-col gap-3">
                       <Select
-                        label="Rating"
+                        label={t("Rating")}
                         variant="bordered"
                         placeholder=""
                         selectedKeys={[rating]}
@@ -236,7 +238,7 @@ const Product = () => {
                         ))}
                       </Select>
                       <Textarea
-                        label="Leave a comment."
+                        label={t("Leave a comment.")}
                         variant="bordered"
                         placeholder=""
                         disableAutosize
@@ -253,14 +255,14 @@ const Product = () => {
                           onClick={handleAddReview}
                           type="submit"
                         >
-                          Submit
+                          {t("Submit")}
                         </Button>
                         <Button
                           color="danger"
                           variant="flat"
                           onPress={handleSecondModalClose}
                         >
-                          Close
+                          {t("Close")}
                         </Button>
                       </ModalFooter>
                     </form>
@@ -272,7 +274,7 @@ const Product = () => {
         </div>
       </div>
       <Divider className="my-4" />
-      <h1 className="text-lg sm:pl-10 font-bold">Reviews</h1>
+      <h1 className="text-lg sm:pl-10 font-bold">{t("Reviews")}</h1>
       <ProductReviewCarousel reviewList={reviews} />
       <Divider className="my-4" />
       {user?.user_id != product.user_id ? (
@@ -282,7 +284,7 @@ const Product = () => {
           selectedKey={selected}
           onSelectionChange={setSelected}
         >
-          <Tab key="buy" title="Buy" className="w-full">
+          <Tab key="buy" title={t("Buy")} className="w-full">
             <Card className="mb-8">
               <CardBody>
                 <form
@@ -291,18 +293,18 @@ const Product = () => {
                 >
                   <Input
                     autoFocus
-                    label="Quantity"
+                    label={t("Quantity")}
                     type="number"
-                    placeholder="Set a quantity"
+                    placeholder={t("Set a quantity")}
                     variant="bordered"
                     endContent={product.unit}
                     defaultValue={product?.quantity}
                     {...registerBuy("quantity", {
-                      required: "Quantity is required",
-                      min: { value: 1, message: "Quantity must be at least 1" },
+                      required: t("Quantity is required"),
+                      min: { value: 1, message: t("Quantity must be at least 1") },
                       max: {
                         value: product.quantity,
-                        message: `Quantity cannot exceed ${product.quantity}`,
+                        message: `${t('Quantity cannot exceed')} ${product.quantity}`,
                       },
                     })}
                     value={quantity}
@@ -313,20 +315,20 @@ const Product = () => {
                   <Input
                     isDisabled
                     type="number"
-                    label="Price"
+                    label={t("Price")}
                     variant="bordered"
                     defaultValue={quantity * product.price}
                     value={quantity * product.price}
                     startContent="₹"
                   />
                   <Button color="primary" type="submit" className="w-48">
-                    Make a request
+                    {t("Make a request")}
                   </Button>
                 </form>
               </CardBody>
             </Card>
           </Tab>
-          <Tab key="rent" title="Rent" className="w-full">
+          <Tab key="rent" title={t("Rent")} className="w-full">
             <Card className="mb-8">
               <CardBody>
                 <form
@@ -336,21 +338,21 @@ const Product = () => {
                   <div className="flex gap-2">
                     <Input
                       autoFocus
-                      label="Quantity"
+                      label={t("Quantity")}
                       type="number"
-                      placeholder="Set a quantity"
+                      placeholder={t("Set a quantity")}
                       variant="bordered"
                       endContent={product.unit}
                       defaultValue={product?.quantity}
                       {...registerRent("quantity", {
-                        required: "Quantity is required",
+                        required: t("Quantity is required"),
                         min: {
                           value: 1,
-                          message: "Quantity must be at least 1",
+                          message: t("Quantity must be at least 1"),
                         },
                         max: {
                           value: product.quantity,
-                          message: `Quantity cannot exceed ${product.quantity}`,
+                          message: `${t("Quantity cannot exceed")} ${product.quantity}`,
                         },
                       })}
                       value={quantity}
@@ -360,16 +362,16 @@ const Product = () => {
                     />
                     <Input
                       autoFocus
-                      label="Duration"
+                      label={t("Duration")}
                       type="number"
-                      placeholder="Set a duration"
+                      placeholder={t("Set a duration")}
                       variant="bordered"
                       endContent={"days"}
                       {...registerRent("duration", {
-                        required: "Duration is required",
+                        required: t("Duration is required"),
                         min: {
                           value: 1,
-                          message: "Duration must be at least 1",
+                          message: t("Duration must be at least 1"),
                         },
                       })}
                       isInvalid={!!errorsRent.duration}
@@ -379,14 +381,14 @@ const Product = () => {
                   <Input
                     isDisabled
                     type="number"
-                    label="Price"
+                    label={t("Price")}
                     variant="bordered"
                     value={quantity * product.price}
                     defaultValue={quantity * product.price}
                     startContent="₹"
                   />
                   <Button color="primary" type="submit" className="w-48">
-                    Make a request
+                    {t("Make a request")}
                   </Button>
                 </form>
               </CardBody>
@@ -399,7 +401,7 @@ const Product = () => {
           className="w-32"
           startContent={<Pencil />}
         >
-          Edit Listing
+          {t("Edit Item")}
         </Button>
       )}
       <Divider className="my-4" />
@@ -408,22 +410,22 @@ const Product = () => {
         onClick={() => navigate(-1)}
         startContent={<Undo2 />}
       >
-        Go Back
+        {t("Go Back")}
       </Button>
       <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Wait a minute!
+                {t("Wait a minute!")}
               </ModalHeader>
-              <ModalBody>You need to sign in to continue.</ModalBody>
+              <ModalBody>{t("You need to sign in to continue.")}</ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  Go back
+                  {t("Go Back")}
                 </Button>
                 <Button color="primary" onPress={() => navigate("/login")}>
-                  Sign In
+                  {t("Sign In")}
                 </Button>
               </ModalFooter>
             </>

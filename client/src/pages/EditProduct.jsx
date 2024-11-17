@@ -22,6 +22,7 @@ import {
 import NotFound from "./NotFound";
 import EditMediaCarousel from "../components/EditMediaCarousel";
 import { Plus } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const EditProduct = () => {
   const {
@@ -46,6 +47,7 @@ const EditProduct = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const categoryValue = watch("category_id");
   const { id } = useParams();
+  const { t } = useTranslation();
 
   const fetchProduct = async (id) => {
     try {
@@ -94,7 +96,7 @@ const EditProduct = () => {
       const formData = new FormData();
       formData.append("file", values.file[0]);
       await uploadMedia(product.product_id, formData);
-      toast.success("File uploaded successfully.");
+      toast.success(t("File uploaded successfully."));
       fetchProduct(id);
     } catch (error) {
       console.log(error);
@@ -107,7 +109,7 @@ const EditProduct = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -121,16 +123,16 @@ const EditProduct = () => {
 
   return (
     <div className="container">
-      <h1 className="font-bold p-4 pl-10 text-xl">Update Item Media</h1>
+      <h1 className="font-bold p-4 pl-10 text-xl">{t("Update Item Media")}</h1>
       <Button className="ml-10 mb-3" startContent={<Plus />} onPress={onOpen}>
-        Add Media
+        {t("Add Media")}
       </Button>
       <Modal backdrop="blur" isOpen={isOpen} onClose={onClose}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Add Media
+                {t("Add Media")}
               </ModalHeader>
               <ModalBody>
                 <form
@@ -139,23 +141,23 @@ const EditProduct = () => {
                 >
                   <Input
                     autoFocus
-                    label="Add an image or a video"
+                    label={t("Add an image or a video")}
                     type="file"
                     accept="image/*, video/*"
-                    placeholder="Upload"
+                    placeholder={t("Upload")}
                     variant="bordered"
                     {...registerFile("file", {
-                      required: "File is required",
+                      required: t("File is required"),
                     })}
                     isInvalid={!!errorsFile.file}
                     errorMessage={errorsFile.file?.message}
                   />
                   <ModalFooter>
-                    <Button color="primary" type="submit" >
-                      Add
+                    <Button color="primary" type="submit">
+                      {t("Add")}
                     </Button>
                     <Button color="danger" variant="light" onPress={onClose}>
-                      Cancel
+                      {t("Cancel")}
                     </Button>
                   </ModalFooter>
                 </form>
@@ -172,16 +174,16 @@ const EditProduct = () => {
             className="flex flex-col gap-2 p-4"
             encType="multipart/form-data"
           >
-            <h1 className="font-bold">Update Item Details</h1>
+            <h1 className="font-bold">{t("Update Item Details")}</h1>
             <Input
               autoFocus
-              label="Name"
+              label={t("Name")}
               type="text"
               placeholder=""
               defaultValue={product.product_name}
               variant="bordered"
               {...register("product_name", {
-                required: "Name is required",
+                required: t("Name is required"),
               })}
               isInvalid={!!errors.product_name}
               errorMessage={errors.product_name?.message}
@@ -191,14 +193,14 @@ const EditProduct = () => {
               control={control}
               defaultValue={product.description}
               rules={{
-                required: "Description is required", // Validation rule
+                required: t("Description is required"), // Validation rule
               }}
               render={({ field }) => (
                 <Textarea
                   {...field}
-                  label="Description"
+                  label={t("Description")}
                   variant="bordered"
-                  placeholder="Enter your description"
+                  placeholder={t("Enter your description")}
                   disableAnimation
                   disableAutosize
                   classNames={{
@@ -216,7 +218,7 @@ const EditProduct = () => {
                 defaultValue={product.category_id}
                 render={({ field }) => (
                   <Select
-                    label="Select a category"
+                    label={t("Select a category")}
                     variant="bordered"
                     placeholder=""
                     selectedKeys={
@@ -229,7 +231,7 @@ const EditProduct = () => {
                   >
                     {categories.map((item) => (
                       <SelectItem key={item.category_id}>
-                        {item.category_name}
+                        {t(item.category_name)}
                       </SelectItem>
                     ))}
                   </Select>
@@ -241,7 +243,7 @@ const EditProduct = () => {
                 defaultValue={product.subcategory_id}
                 render={({ field }) => (
                   <Select
-                    label="Select a subcategory"
+                    label={t("Select a subcategory")}
                     variant="bordered"
                     placeholder=""
                     selectedKeys={
@@ -254,7 +256,7 @@ const EditProduct = () => {
                   >
                     {subcategories.map((item) => (
                       <SelectItem key={item.subcategory_id}>
-                        {item.subcategory_name}
+                        {t(item.subcategory_name)}
                       </SelectItem>
                     ))}
                   </Select>
@@ -265,29 +267,29 @@ const EditProduct = () => {
             <div className="flex gap-2">
               <Input
                 autoFocus
-                label="Quantity"
+                label={t("Quantity")}
                 type="number"
                 placeholder=""
                 defaultValue={product.quantity}
                 variant="bordered"
                 {...register("quantity", {
-                  required: "Quantity is required",
+                  required: t("Quantity is required"),
                   valueAsNumber: true, // Converts input value to number
                   validate: (value) =>
-                    value > 0 || "Quantity must be greater than 0",
+                    value > 0 || t("Quantity must be greater than 0"),
                 })}
                 isInvalid={!!errors.quantity}
                 errorMessage={errors.quantity?.message}
               />
               <Input
                 autoFocus
-                label="Unit"
+                label={t("Unit")}
                 type="text"
                 placeholder=""
                 defaultValue={product.unit}
                 variant="bordered"
                 {...register("unit", {
-                  required: "Unit is required",
+                  required: t("Unit is required"),
                 })}
                 isInvalid={!!errors.unit}
                 errorMessage={errors.unit?.message}
@@ -295,17 +297,17 @@ const EditProduct = () => {
             </div>
             <Input
               autoFocus
-              label="Price"
+              label={t("Price")}
               type="number"
               placeholder=""
               defaultValue={product.price}
               startContent="₹"
               variant="bordered"
               {...register("price", {
-                required: "Price is required",
+                required: t("Price is required"),
                 valueAsNumber: true, // Converts input value to number
                 validate: (value) =>
-                  value > 0 || "Price must be greater than 0",
+                  value > 0 || t("Price must be greater than 0"),
               })}
               isInvalid={!!errors.price}
               errorMessage={errors.price?.message}
@@ -317,7 +319,7 @@ const EditProduct = () => {
                 control={control}
                 render={({ field }) => (
                   <Select
-                    label="Condition"
+                    label={t("Condition")}
                     variant="bordered"
                     placeholder=""
                     selectedKeys={
@@ -328,8 +330,8 @@ const EditProduct = () => {
                       field.onChange(selectedValue);
                     }}
                   >
-                    <SelectItem key="new">New</SelectItem>
-                    <SelectItem key="used">Used</SelectItem>
+                    <SelectItem key="new">{t("New")}</SelectItem>
+                    <SelectItem key="used">{t("Used")}</SelectItem>
                   </Select>
                 )}
               />
@@ -339,7 +341,7 @@ const EditProduct = () => {
                 defaultValue={product.status}
                 render={({ field }) => (
                   <Select
-                    label="Status"
+                    label={t("Status")}
                     variant="bordered"
                     placeholder=""
                     selectedKeys={
@@ -350,23 +352,23 @@ const EditProduct = () => {
                       field.onChange(selectedValue);
                     }}
                   >
-                    <SelectItem key="available">Available</SelectItem>
-                    <SelectItem key="sold">Sold</SelectItem>
-                    <SelectItem key="rented">Rented</SelectItem>
+                    <SelectItem key="available">{t("Available")}</SelectItem>
+                    <SelectItem key="sold">{t("Sold")}</SelectItem>
+                    <SelectItem key="rented">{t("Rented")}</SelectItem>
                   </Select>
                 )}
               />
             </div>
             <div className="pt-5 justify-end flex gap-4">
               <Button color="primary" type="submit">
-                Save
+                {t("Save")}
               </Button>
               <Button
                 color="danger"
                 variant="light"
                 onClick={() => navigate(-1)}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
             </div>
           </form>

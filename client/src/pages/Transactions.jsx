@@ -1,7 +1,21 @@
 import { useEffect, useState } from "react";
 import { getTransactions } from "../services/transactions";
-import { Button, Card,  CardBody,  CardHeader,  Chip,  Divider, Select, SelectItem, Spinner, Tab, Tabs, User } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Chip,
+  Divider,
+  Select,
+  SelectItem,
+  Spinner,
+  Tab,
+  Tabs,
+  User,
+} from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState();
@@ -9,7 +23,8 @@ const Transactions = () => {
   const [transactionType, setTransactionType] = useState("buyer");
   const [transactionStatus, setTransactionStatus] = useState("pending");
   const [order, setOrder] = useState("desc");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -20,12 +35,12 @@ const Transactions = () => {
           type: transactionType,
         };
         console.log(params);
-        
+
         const data = await getTransactions(params);
         setTransactions(data);
       } catch (error) {
         console.error(error);
-        setTransactions()
+        setTransactions();
       } finally {
         setLoading(false);
       }
@@ -38,7 +53,7 @@ const Transactions = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -48,13 +63,13 @@ const Transactions = () => {
 
   return (
     <div className="container min-h-screen">
-      <h1 className="text-xl font-bold p-4">Activity Log</h1>
+      <h1 className="text-xl font-bold p-4">{t("Activity Log")}</h1>
       <Tabs
         aria-label="Options"
         selectedKey={transactionType}
         onSelectionChange={setTransactionType}
       >
-        <Tab key="buyer" title="Buy">
+        <Tab key="buyer" title={t("Buy")}>
           <Card className="w-full">
             <CardHeader className="p-2 flex gap-2">
               <Select
@@ -64,8 +79,8 @@ const Transactions = () => {
                 className="max-w-48"
                 onChange={(e) => setOrder(e.target.value)}
               >
-                <SelectItem key="asc">Oldest</SelectItem>
-                <SelectItem key="desc">Latest</SelectItem>
+                <SelectItem key="asc">{t("Oldest")}</SelectItem>
+                <SelectItem key="desc">{t("Latest")}</SelectItem>
               </Select>
               <Select
                 variant="bordered"
@@ -74,9 +89,9 @@ const Transactions = () => {
                 className="max-w-48"
                 onChange={(e) => setTransactionStatus(e.target.value)}
               >
-                <SelectItem key="pending">Pending</SelectItem>
-                <SelectItem key="completed">Completed</SelectItem>
-                <SelectItem key="cancelled">Cancelled</SelectItem>
+                <SelectItem key="pending">{t("Pending")}</SelectItem>
+                <SelectItem key="completed">{t("Completed")}</SelectItem>
+                <SelectItem key="cancelled">{t("Cancelled")}</SelectItem>
               </Select>
             </CardHeader>
             {transactions ? (
@@ -87,26 +102,26 @@ const Transactions = () => {
                     <div className="mt-4 flex justify-between items-start">
                       <h1 className="text-xl">{item.product.product_name}</h1>
                       <p className="text-xs text-gray-700">
-                        Last Updated:{" "}
+                        {t("Last Updated:")}{" "}
                         {new Date(item.updated_at).toLocaleTimeString()},{" "}
                         {new Date(item.updated_at).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="text-sm text-gray-500">
-                      Date:{" "}
+                      {t("Date:")}{" "}
                       {new Date(item.transaction_date).toLocaleDateString()}
                     </div>
                     <div className=" flex gap-4 my-2">
-                      <p>Amount: ₹{item.price}</p>
+                      <p>{t("Amount")}: ₹{item.price}</p>
                       <p>
-                        Quantity: {item.quantity} {item.product.unit}
+                        {t("Quantity")}: {item.quantity} {item.product.unit}
                       </p>
                     </div>
                     <div className="flex gap-4 items-center text-sm text-gray-700 py-2">
                       <p>
                         {item.transaction_type === "rent"
-                          ? "Owner: "
-                          : "Seller: "}
+                          ? t("Owner: ")
+                          : t("Seller: ")}
                       </p>
                       <User
                         className="cursor-pointer"
@@ -122,7 +137,7 @@ const Transactions = () => {
                     </div>
                     <div className="flex justify-between items-center text-sm text-gray-700 py-2">
                       <div className="flex gap-4 items-center text-sm text-gray-700">
-                        <p>Status: </p>
+                        <p>{t("Status")}: </p>
                         <Chip
                           variant="bordered"
                           color={
@@ -133,8 +148,8 @@ const Transactions = () => {
                               : `warning`
                           }
                         >
-                          {item.status.charAt(0).toUpperCase() +
-                            item.status.slice(1)}
+                          {t(item.status.charAt(0).toUpperCase() +
+                            item.status.slice(1))}
                         </Chip>
                       </div>
                       <Button
@@ -143,7 +158,7 @@ const Transactions = () => {
                           navigate(`/transactions/${item.transaction_id}`)
                         }
                       >
-                        View
+                        {t("View")}
                       </Button>
                     </div>
                   </div>
@@ -151,12 +166,12 @@ const Transactions = () => {
               </CardBody>
             ) : (
               <div className="flex items-center justify-center w-full h-96 text-xl font-semibold text-red-400">
-                No activities to show.
+                {t("No activities to show.")}
               </div>
             )}
           </Card>
         </Tab>
-        <Tab key="seller" title="Sell">
+        <Tab key="seller" title={t("Sell")}>
           <Card className="w-full">
             <CardHeader className="p-2 flex gap-2">
               <Select
@@ -166,8 +181,8 @@ const Transactions = () => {
                 className="max-w-48"
                 onChange={(e) => setOrder(e.target.value)}
               >
-                <SelectItem key="asc">Oldest</SelectItem>
-                <SelectItem key="desc">Latest</SelectItem>
+                <SelectItem key="asc">{t("Oldest")}</SelectItem>
+                <SelectItem key="desc">{t("Latest")}</SelectItem>
               </Select>
               <Select
                 variant="bordered"
@@ -176,9 +191,9 @@ const Transactions = () => {
                 className="max-w-48"
                 onChange={(e) => setTransactionStatus(e.target.value)}
               >
-                <SelectItem key="pending">Pending</SelectItem>
-                <SelectItem key="completed">Completed</SelectItem>
-                <SelectItem key="cancelled">Cancelled</SelectItem>
+                <SelectItem key="pending">{t("Pending")}</SelectItem>
+                <SelectItem key="completed">{t("Completed")}</SelectItem>
+                <SelectItem key="cancelled">{t("Cancelled")}</SelectItem>
               </Select>
             </CardHeader>
             {transactions ? (
@@ -189,26 +204,26 @@ const Transactions = () => {
                     <div className="mt-4 flex justify-between items-start">
                       <h1 className="text-xl">{item.product.product_name}</h1>
                       <p className="text-xs text-gray-700">
-                        Last Updated:{" "}
+                        {t("Last Updated:")}{" "}
                         {new Date(item.updated_at).toLocaleTimeString()},{" "}
                         {new Date(item.updated_at).toLocaleDateString()}
                       </p>
                     </div>
                     <div className="text-sm text-gray-500">
-                      Date:{" "}
+                      {t("Date:")}{" "}
                       {new Date(item.transaction_date).toLocaleDateString()}
                     </div>
                     <div className=" flex gap-4 my-2">
-                      <p>Amount: ₹{item.price}</p>
+                      <p>{t("Amount:")} ₹{item.price}</p>
                       <p>
-                        Quantity: {item.quantity} {item.product.unit}
+                        {t("Quantity")}: {item.quantity} {item.product.unit}
                       </p>
                     </div>
                     <div className="flex gap-4 items-center text-sm text-gray-700 py-2">
                       <p>
                         {item.transaction_type === "rent"
-                          ? "Renter: "
-                          : "Buyer: "}
+                          ? t("Renter: ")
+                          : t("Buyer: ")}
                       </p>
                       <User
                         className="cursor-pointer"
@@ -224,7 +239,7 @@ const Transactions = () => {
                     </div>
                     <div className="flex justify-between items-center text-sm text-gray-700 py-2">
                       <div className="flex gap-4 items-center text-sm text-gray-700">
-                        <p>Status: </p>
+                        <p>{t("Status")}: </p>
                         <Chip
                           variant="bordered"
                           color={
@@ -235,8 +250,8 @@ const Transactions = () => {
                               : `warning`
                           }
                         >
-                          {item.status.charAt(0).toUpperCase() +
-                            item.status.slice(1)}
+                          {t(item.status.charAt(0).toUpperCase() +
+                            item.status.slice(1))}
                         </Chip>
                       </div>
                       <Button
@@ -245,7 +260,7 @@ const Transactions = () => {
                           navigate(`/transactions/${item.transaction_id}`)
                         }
                       >
-                        View
+                        {t("View")}
                       </Button>
                     </div>
                   </div>
@@ -253,7 +268,7 @@ const Transactions = () => {
               </CardBody>
             ) : (
               <div className="flex items-center justify-center w-full h-96 text-xl font-semibold text-red-400">
-                No activities to show.
+                {t("No activities to show.")}
               </div>
             )}
           </Card>

@@ -14,6 +14,7 @@ import ProductMediaCarousel from "./ProductMediaCarousel";
 import { Undo2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { getRental, updateRentalStatus } from "../services/rentals";
+import { useTranslation } from "react-i18next";
 
 const Transaction = () => {
   const [rental, setRental] = useState();
@@ -22,6 +23,7 @@ const Transaction = () => {
   const [product, setProduct] = useState();
   const navigate = useNavigate();
   const { id } = useParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchRental = async () => {
@@ -73,8 +75,8 @@ const Transaction = () => {
     const dayDifference = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
 
     return dayDifference > 0
-      ? `${dayDifference} days remaining`
-      : `${Math.abs(dayDifference)} days overdue`;
+      ? `${dayDifference} ${t("days remaining")}`
+      : `${Math.abs(dayDifference)} ${t("days overdue")}`;
   };
 
   if (loading || (rental && loadingProduct)) {
@@ -82,7 +84,7 @@ const Transaction = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -96,7 +98,7 @@ const Transaction = () => {
 
   return (
     <div className="container min-h-screen">
-      <h1 className="text-xl font-bold pt-4 pl-8">Rental Entry</h1>
+      <h1 className="text-xl font-bold pt-4 pl-8">{t("Rental Entry")}</h1>
 
       <div className="flex md:flex-row flex-col items-center justify-between gap-3 my-5">
         <div className="w-[100%] md:w-[50%]">
@@ -115,45 +117,46 @@ const Transaction = () => {
                   variant="flat"
                   className="text-xs sm:text-sm"
                 >
-                  {product?.category.category_name}
+                  {t(product?.category.category_name)}
                 </Chip>
                 <Chip
                   color="warning"
                   variant="flat"
                   className="text-xs sm:text-sm"
                 >
-                  {product?.subcategory.subcategory_name}
+                  {t(product?.subcategory.subcategory_name)}
                 </Chip>
                 <Chip
                   color="warning"
                   variant="flat"
                   className="text-xs sm:text-sm"
                 >
-                  {product.condition.charAt(0).toUpperCase() +
-                    product.condition.slice(1)}
+                  {t(product.condition.charAt(0).toUpperCase() +
+                    product.condition.slice(1))}
                 </Chip>
               </div>
             </div>
             <p className="text-xs text-gray-700">
-              Last Updated: {new Date(rental.updated_at).toLocaleTimeString()},{" "}
+              {t("Last Updated:")} {new Date(rental.updated_at).toLocaleTimeString()},{" "}
               {new Date(rental.updated_at).toLocaleDateString()}
             </p>
           </div>
           <Divider className="my-4" />
           <div className="text-sm text-gray-500">
-            Start Date: {new Date(rental.rental_start_date).toLocaleDateString()}
+            {t("Start Date:")}{" "}
+            {new Date(rental.rental_start_date).toLocaleDateString()}
           </div>
           <div className="text-sm text-gray-500">
-            End Date: {new Date(rental.rental_end_date).toLocaleDateString()}
+            {t("End Date:")} {new Date(rental.rental_end_date).toLocaleDateString()}
           </div>
           <div className=" flex gap-4 my-2">
             {rental.status !== "returned"
               ? getRentalStatus(rental.rental_end_date)
-              : "Returned"}
+              : t("Returned")}
           </div>
           <Divider className="my-4" />
           <div className="flex gap-4 items-center text-sm text-gray-700 py-2">
-            <p>{rental.role === "renter" ? "Owner: " : "Renter: "}</p>
+            <p>{rental.role === "renter" ? t("Owner: ") : t("Renter: ")}</p>
             <User
               className="cursor-pointer"
               onClick={() => navigate(`/profile/${rental.otherParty.user_id}`)}
@@ -167,7 +170,7 @@ const Transaction = () => {
           <Divider className="my-4" />
           <div className="flex justify-between items-center text-sm text-gray-700 py-2">
             <div className="flex gap-4 items-center text-sm text-gray-700">
-              <p>Status: </p>
+              <p>{t("Status")}: </p>
               <Chip
                 variant="bordered"
                 color={
@@ -178,7 +181,7 @@ const Transaction = () => {
                     : `warning`
                 }
               >
-                {rental.status.charAt(0).toUpperCase() + rental.status.slice(1)}
+                {t(rental.status.charAt(0).toUpperCase() + rental.status.slice(1))}
               </Chip>
             </div>
           </div>
@@ -190,7 +193,7 @@ const Transaction = () => {
                 variant="bordered"
                 onClick={() => handleUpdateStatus()}
               >
-                Mark As Returned
+                {t("Mark As Returned")}
               </Button>
             </div>
           )}
@@ -201,7 +204,7 @@ const Transaction = () => {
             onClick={() => navigate(-1)}
             startContent={<Undo2 />}
           >
-            Go Back
+            {t("Go Back")}
           </Button>
         </div>
       </div>

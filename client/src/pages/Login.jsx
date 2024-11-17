@@ -7,6 +7,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/state/authSlice";
+import { useTranslation } from "react-i18next";
+
 
 const Login = () => {
   const { isAuthenticated, loading } = useSelector(
@@ -14,6 +16,7 @@ const Login = () => {
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {t} = useTranslation()
 
   const {
     register,
@@ -35,18 +38,18 @@ const Login = () => {
     try {
       console.log(val);
       await dispatch(login(val)).unwrap(); // unwrap to handle async errors in catch block
-      toast.success("Login successful!");
+      toast.success(t("Login successful!"));
       navigate("/");
     } catch (error) {
-      console.log("Error creating user: ", error);
-      toast.error("Invalid credentials. Please try again.");
+      console.log(t("Error creating user: "), error);
+      toast.error(t("Invalid credentials. Please try again."));
     }
   };
 
   return (
     <div className="bg-green-400 bg-[url('/bg.jpg')] bg-cover h-screen flex justify-center items-center p-2">
       <Card className="backdrop-blur-xl bg-transparent text-white  p-3 md:p-10 w-[100%] md:w-[80%] lg:w-[60%]">
-        <CardHeader className="text-2xl">Login Here.</CardHeader>
+        <CardHeader className="text-2xl">{t("Login Here.")}</CardHeader>
         <CardBody>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -55,14 +58,14 @@ const Login = () => {
             <Input
               isRequired
               type="email"
-              label="Email"
+              label={t("Email")}
               variant="underlined"
               defaultValue=""
               {...register("email", {
-                required: "Email is required",
+                required: t("Email is required"),
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message: "Invalid email address",
+                  message: t("Invalid email address"),
                 },
                 onChange: () => trigger("email"),
               })}
@@ -71,14 +74,14 @@ const Login = () => {
             />
             <Input
               isRequired
-              label="Password"
+              label={t("Password")}
               variant="underlined"
               defaultValue=""
               {...register("password", {
-                required: "Password is required",
+                required: t("Password is required"),
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 6 characters",
+                  message: t("Password must be at least 6 characters"),
                 },
                 onChange: () => trigger("password"),
               })}
@@ -104,11 +107,11 @@ const Login = () => {
               type="submit"
               color="secondary"
             >
-              {loading ? <Spinner /> : "Login"}
+              {loading ? <Spinner /> : t("Login")}
             </Button>
             <p className="text-sm">or</p>
             <Link to={"/register"} className="hover:underline text-sm">
-              New here? Register now.
+              {t("New here? Register now.")}
             </Link>
           </form>
         </CardBody>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { getCategories, getSubCategories } from "../services/categories";
 import { createProduct } from "../services/products";
 import {toast} from "react-hot-toast"
+import { useTranslation } from "react-i18next";
 
 const AddProduct = () => {
   const {
@@ -18,6 +19,8 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubCategories] = useState([]);
   const categoryValue = watch("category_id");
+  const { t } = useTranslation();
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -49,7 +52,7 @@ const AddProduct = () => {
 
   return (
     <div className="container min-h-[700px]">
-      <h1 className="text-xl font-bold p-4">Create An Item</h1>
+      <h1 className="text-xl font-bold p-4">{t("Create An Item")}</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-2 p-4"
@@ -57,12 +60,12 @@ const AddProduct = () => {
       >
         <Input
           autoFocus
-          label="Name"
+          label={t("Name")}
           type="text"
           placeholder=""
           variant="bordered"
           {...register("product_name", {
-            required: "Name is required",
+            required: t("Name is required"),
           })}
           isInvalid={!!errors.product_name}
           errorMessage={errors.product_name?.message}
@@ -72,14 +75,14 @@ const AddProduct = () => {
           control={control}
           defaultValue=""
           rules={{
-            required: "Description is required", // Validation rule
+            required: t("Description is required"), // Validation rule
           }}
           render={({ field }) => (
             <Textarea
               {...field}
-              label="Description"
+              label={t("Description")}
               variant="bordered"
-              placeholder="Enter your description"
+              placeholder={t("Enter your description")}
               disableAnimation
               disableAutosize
               classNames={{
@@ -96,7 +99,7 @@ const AddProduct = () => {
             control={control}
             render={({ field }) => (
               <Select
-                label="Select a category"
+                label={t("Select a category")}
                 variant="bordered"
                 placeholder=""
                 selectedKeys={
@@ -109,7 +112,7 @@ const AddProduct = () => {
               >
                 {categories.map((item) => (
                   <SelectItem key={item.category_id}>
-                    {item.category_name}
+                    {t(item.category_name)}
                   </SelectItem>
                 ))}
               </Select>
@@ -120,7 +123,7 @@ const AddProduct = () => {
             control={control}
             render={({ field }) => (
               <Select
-                label="Select a subcategory"
+                label={t("Select a subcategory")}
                 variant="bordered"
                 placeholder=""
                 selectedKeys={
@@ -133,7 +136,7 @@ const AddProduct = () => {
               >
                 {subcategories.map((item) => (
                   <SelectItem key={item.subcategory_id}>
-                    {item.subcategory_name}
+                    {t(item.subcategory_name)}
                   </SelectItem>
                 ))}
               </Select>
@@ -144,27 +147,27 @@ const AddProduct = () => {
         <div className="flex gap-2">
           <Input
             autoFocus
-            label="Quantity"
+            label={t("Quantity")}
             type="number"
             placeholder=""
             variant="bordered"
             {...register("quantity", {
-              required: "Quantity is required",
+              required: t("Quantity is required"),
               valueAsNumber: true, // Converts input value to number
               validate: (value) =>
-                value > 0 || "Quantity must be greater than 0",
+                value > 0 || t("Quantity must be greater than 0"),
             })}
             isInvalid={!!errors.quantity}
             errorMessage={errors.quantity?.message}
           />
           <Input
             autoFocus
-            label="Unit"
+            label={t("Unit")}
             type="text"
             placeholder=""
             variant="bordered"
             {...register("unit", {
-              required: "Unit is required",
+              required: t("Unit is required"),
             })}
             isInvalid={!!errors.unit}
             errorMessage={errors.unit?.message}
@@ -172,15 +175,15 @@ const AddProduct = () => {
         </div>
         <Input
           autoFocus
-          label="Price"
+          label={t("Price")}
           type="number"
           placeholder=""
           startContent="₹"
           variant="bordered"
           {...register("price", {
-            required: "Price is required",
+            required: t("Price is required"),
             valueAsNumber: true, // Converts input value to number
-            validate: (value) => value > 0 || "Price must be greater than 0",
+            validate: (value) => value > 0 || t("Price must be greater than 0"),
           })}
           isInvalid={!!errors.price}
           errorMessage={errors.price?.message}
@@ -191,7 +194,7 @@ const AddProduct = () => {
             control={control}
             render={({ field }) => (
               <Select
-                label="Condition"
+                label={t("Condition")}
                 variant="bordered"
                 placeholder=""
                 selectedKeys={
@@ -202,8 +205,8 @@ const AddProduct = () => {
                   field.onChange(selectedValue);
                 }}
               >
-                <SelectItem key="new">New</SelectItem>
-                <SelectItem key="used">Used</SelectItem>
+                <SelectItem key="new">{t('New')}</SelectItem>
+                <SelectItem key="used">{t('Used')}</SelectItem>
               </Select>
             )}
           />
@@ -212,7 +215,7 @@ const AddProduct = () => {
             control={control}
             render={({ field }) => (
               <Select
-                label="Status"
+                label={t("Status")}
                 variant="bordered"
                 placeholder=""
                 selectedKeys={
@@ -223,19 +226,19 @@ const AddProduct = () => {
                   field.onChange(selectedValue);
                 }}
               >
-                <SelectItem key="available">Available</SelectItem>
-                <SelectItem key="sold">Sold</SelectItem>
-                <SelectItem key="rented">Rented</SelectItem>
+                <SelectItem key="available">{t("Available")}</SelectItem>
+                <SelectItem key="sold">{t("Sold")}</SelectItem>
+                <SelectItem key="rented">{t("Rented")}</SelectItem>
               </Select>
             )}
           />
         </div>
         <div className="p-5 right-0 bottom-0 absolute flex gap-4">
           <Button color="primary" type="submit">
-            Create
+            {t("Create")}
           </Button>
           <Button color="danger" variant="light" onClick={() => navigate(-1)}>
-            Cancel
+            {t("Cancel")}
           </Button>
         </div>
       </form>

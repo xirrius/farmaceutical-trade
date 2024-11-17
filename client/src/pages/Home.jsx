@@ -1,9 +1,11 @@
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 import { FileClock, Notebook, Store } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const navigate = useNavigate()
+  const {t} = useTranslation()
   return (
     <div>
       <div>
@@ -26,10 +28,10 @@ const Home = () => {
           >
             <div className="flex flex-col gap-4">
               <h1 className="text-3xl sm:text-5xl leading-tight tracking-wider italic md:max-w-[70%]">
-                Empowering Farmers with Seamless Trade Solutions!
+                {t("Empowering Farmers with Seamless Trade Solutions!")}
               </h1>
               <p className="tracking-widest">
-                Buy, sell, and rent agricultural assets with ease.
+                {t("Buy, sell, and rent agricultural assets with ease.")}
               </p>
               <div className="ml-5 flex gap-12 mt-5">
                 <Button
@@ -37,14 +39,14 @@ const Home = () => {
                   color="danger"
                   onClick={() => navigate("/products")}
                 >
-                  Browse Marketplace
+                  {t("Browse Marketplace")}
                 </Button>
                 <Button
                   variant="ghost"
                   color="warning"
                   onClick={() => navigate("/register")}
                 >
-                  Sign Up Now
+                  {t("Sign Up Now")}
                 </Button>
               </div>
             </div>
@@ -52,7 +54,7 @@ const Home = () => {
         </div>
         <div className="flex flex-col items-center mt-14">
           <h1 className="text-3xl mb-5 leading-tight tracking-wider">
-            What We Offer
+            {t("What We Offer")}
           </h1>
           <div className="flex flex-wrap gap-4 items-center justify-center py-6">
             <Card className="p-8 w-96 h-[320px]">
@@ -61,12 +63,10 @@ const Home = () => {
               </CardHeader>
               <CardBody className="text-center overflow-visible py-2 items-center gap-2">
                 <h4 className="font-semibold tracking-wide text-large">
-                  Marketplace with Personalized Filters
+                  {t("Marketplace with Personalized Filters")}
                 </h4>
                 <p className="text-gray-400 tracking-wide">
-                  Browse a wide variety of agricultural assets and filter
-                  products based on your needs such as price, category, and
-                  availability.
+                  {t("Browse a wide variety of agricultural assets and filter products based on your needs such as price, category, and availability.")}
                 </p>
               </CardBody>
             </Card>
@@ -76,11 +76,10 @@ const Home = () => {
               </CardHeader>
               <CardBody className="overflow-visible py-2 text-center items-center gap-2">
                 <h4 className="font-semibold tracking-wide text-large">
-                  Activity Log
+                  {t("Activity Log")}
                 </h4>
                 <p className="text-gray-400 tracking-wide">
-                  Keep track of your buying, selling, and rental activities in
-                  one place.
+                  {t("Keep track of your buying, selling, and rental activities in one place.")}
                 </p>
               </CardBody>
             </Card>
@@ -90,10 +89,10 @@ const Home = () => {
               </CardHeader>
               <CardBody className="overflow-visible py-2 items-center gap-2 text-center">
                 <h4 className="font-semibold tracking-wide text-large">
-                  Rental Logs
+                  {t("Rental Logs")}
                 </h4>
                 <p className="text-gray-400 tracking-wide">
-                  Simplify renting with detailed logs and status tracking.
+                  {t("Simplify renting with detailed logs and status tracking.")}
                 </p>
               </CardBody>
             </Card>
@@ -113,7 +112,7 @@ const Home = () => {
           >
             <div className="flex flex-col gap-4">
               <h1 className="text-3xl sm:text-5xl leading-tight tracking-wider italic text-center">
-                Start Trading Smarter Today!
+                {t("Start Trading Smarter Today!")}
               </h1>
               <div className="flex gap-12 mt-5 justify-center">
                 <Button
@@ -121,14 +120,14 @@ const Home = () => {
                   color="success"
                   onClick={() => navigate("/login")}
                 >
-                  Sign In
+                  {t("Sign In")}
                 </Button>
                 <Button
                   variant="shadow"
                   color="warning"
                   onClick={() => navigate("/register")}
                 >
-                  Get Started
+                  {t("Get Started")}
                 </Button>
               </div>
             </div>

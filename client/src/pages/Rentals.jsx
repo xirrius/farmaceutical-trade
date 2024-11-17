@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { getRentals } from "../services/rentals";
+import { useTranslation } from "react-i18next";
 
 const Rentals = () => {
   const [rentals, setRentals] = useState();
@@ -22,6 +23,7 @@ const Rentals = () => {
   const [rentalType, setRentalType] = useState("renter");
   const [rentalStatus, setRentalStatus] = useState("active");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchRentals = async () => {
@@ -55,8 +57,8 @@ const Rentals = () => {
 
     // Determine the status message
     return dayDifference > 0
-      ? `${dayDifference} days remaining`
-      : `${Math.abs(dayDifference)} days overdue`;
+      ? `${dayDifference} ${t("days remaining")}`
+      : `${Math.abs(dayDifference)} ${t("days overdue")}`;
   };
 
   if (loading) {
@@ -64,7 +66,7 @@ const Rentals = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -74,13 +76,13 @@ const Rentals = () => {
 
   return (
     <div className="container min-h-screen">
-      <h1 className="text-xl font-bold p-4">Rental Log</h1>
+      <h1 className="text-xl font-bold p-4">{t("Rental Log")}</h1>
       <Tabs
         aria-label="Options"
         selectedKey={rentalType}
         onSelectionChange={setRentalType}
       >
-        <Tab key="renter" title="Renter">
+        <Tab key="renter" title={t("Renter")}>
           <Card className="w-full">
             <CardHeader className="p-2 flex gap-2">
               <Select
@@ -90,9 +92,9 @@ const Rentals = () => {
                 className="max-w-48"
                 onChange={(e) => setRentalStatus(e.target.value)}
               >
-                <SelectItem key="active">Active</SelectItem>
-                <SelectItem key="returned">Returned</SelectItem>
-                <SelectItem key="overdue">Overdue</SelectItem>
+                <SelectItem key="active">{t("Active")}</SelectItem>
+                <SelectItem key="returned">{t("Returned")}</SelectItem>
+                <SelectItem key="overdue">{t("Overdue")}</SelectItem>
               </Select>
             </CardHeader>
             {rentals ? (
@@ -103,7 +105,7 @@ const Rentals = () => {
                     <div className="mt-4 flex justify-between items-start">
                       <h1 className="text-xl">{item.product.product_name}</h1>
                       <p className="text-xs text-gray-700">
-                        Last Updated:{" "}
+                        {t("Last Updated:")}{" "}
                         {new Date(item.updated_at).toLocaleTimeString()},{" "}
                         {new Date(item.updated_at).toLocaleDateString()}
                       </p>
@@ -114,7 +116,7 @@ const Rentals = () => {
                         : new Date(item.rental_end_date).toLocaleDateString()}
                     </div>
                     <div className="flex gap-4 items-center text-sm text-gray-700 py-2">
-                      <p>Owner:</p>
+                      <p>{t("Owner: ")}</p>
                       <User
                         className="cursor-pointer"
                         onClick={() =>
@@ -129,7 +131,7 @@ const Rentals = () => {
                     </div>
                     <div className="flex justify-between items-center text-sm text-gray-700 py-2">
                       <div className="flex gap-4 items-center text-sm text-gray-700">
-                        <p>Status: </p>
+                        <p>{t("Status")}: </p>
                         <Chip
                           variant="bordered"
                           color={
@@ -140,15 +142,17 @@ const Rentals = () => {
                               : `warning`
                           }
                         >
-                          {item.status.charAt(0).toUpperCase() +
-                            item.status.slice(1)}
+                          {t(
+                            item.status.charAt(0).toUpperCase() +
+                              item.status.slice(1)
+                          )}
                         </Chip>
                       </div>
                       <Button
                         color="primary"
                         onClick={() => navigate(`/rentals/${item.rental_id}`)}
                       >
-                        View
+                        {t("View")}
                       </Button>
                     </div>
                   </div>
@@ -156,12 +160,12 @@ const Rentals = () => {
               </CardBody>
             ) : (
               <div className="flex items-center justify-center w-full h-96 text-xl font-semibold text-red-400">
-                No rental entries to show.
+                {t("No rental entries to show.")}
               </div>
             )}
           </Card>
         </Tab>
-        <Tab key="owner" title="Owner">
+        <Tab key="owner" title={t("Owner")}>
           <Card className="w-full">
             <CardHeader className="p-2 flex gap-2">
               <Select
@@ -171,9 +175,9 @@ const Rentals = () => {
                 className="max-w-48"
                 onChange={(e) => setRentalStatus(e.target.value)}
               >
-                <SelectItem key="active">Active</SelectItem>
-                <SelectItem key="returned">Returned</SelectItem>
-                <SelectItem key="overdue">Overdue</SelectItem>
+                <SelectItem key="active">{t("Active")}</SelectItem>
+                <SelectItem key="returned">{t("Returned")}</SelectItem>
+                <SelectItem key="overdue">{t("Overdue")}</SelectItem>
               </Select>
             </CardHeader>
             {rentals ? (
@@ -184,7 +188,7 @@ const Rentals = () => {
                     <div className="mt-4 flex justify-between items-start">
                       <h1 className="text-xl">{item.product.product_name}</h1>
                       <p className="text-xs text-gray-700">
-                        Last Updated:{" "}
+                        {t("Last Updated:")}{" "}
                         {new Date(item.updated_at).toLocaleTimeString()},{" "}
                         {new Date(item.updated_at).toLocaleDateString()}
                       </p>
@@ -195,7 +199,7 @@ const Rentals = () => {
                         : new Date(item.rental_end_date).toLocaleDateString()}
                     </div>
                     <div className="flex gap-4 items-center text-sm text-gray-700 py-2">
-                      <p>Renter:</p>
+                      <p>{t("Renter: ")}</p>
                       <User
                         className="cursor-pointer"
                         onClick={() =>
@@ -210,7 +214,7 @@ const Rentals = () => {
                     </div>
                     <div className="flex justify-between items-center text-sm text-gray-700 py-2">
                       <div className="flex gap-4 items-center text-sm text-gray-700">
-                        <p>Status: </p>
+                        <p>{t("Status")}: </p>
                         <Chip
                           variant="bordered"
                           color={
@@ -221,15 +225,17 @@ const Rentals = () => {
                               : `warning`
                           }
                         >
-                          {item.status.charAt(0).toUpperCase() +
-                            item.status.slice(1)}
+                          {t(
+                            item.status.charAt(0).toUpperCase() +
+                              item.status.slice(1)
+                          )}
                         </Chip>
                       </div>
                       <Button
                         color="primary"
                         onClick={() => navigate(`/rentals/${item.rental_id}`)}
                       >
-                        View
+                        {t("View")}
                       </Button>
                     </div>
                   </div>
@@ -237,7 +243,7 @@ const Rentals = () => {
               </CardBody>
             ) : (
               <div className="flex items-center justify-center w-full h-96 text-xl font-semibold text-red-400">
-                No activities to show.
+                {t("No rental entries to show.")}
               </div>
             )}
           </Card>

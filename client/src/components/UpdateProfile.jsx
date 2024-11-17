@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { updateUser } from "../redux/state/authSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const UpdateProfile = ({onClose}) => {
   const {user} = useSelector((state) => state.auth)
@@ -13,6 +14,8 @@ const UpdateProfile = ({onClose}) => {
     formState: { errors },
     trigger,
   } = useForm();
+      const { t } = useTranslation();
+
     async function onSubmit(values) {
       const formData = new FormData();
       for (const [key, value] of Object.entries(values)) {
@@ -28,9 +31,9 @@ const UpdateProfile = ({onClose}) => {
       
       try {
         await dispatch(updateUser(formData))
-        toast.success("Profile updated successfully.")
+        toast.success(t("Profile updated successfully."))
       } catch (error) {
-        toast.error(`Error updating the user: ${error}`)
+        toast.error(`${("Error updating the user:")} ${error}`)
         console.log(error);
       }
     }
@@ -44,29 +47,29 @@ const UpdateProfile = ({onClose}) => {
       >
         <Input
           autoFocus
-          label="Name"
+          label={t("Name")}
           type="text"
           placeholder=""
           variant="underlined"
           defaultValue={user?.name}
           {...register("name", {
-            required: "Name is required",
+            required: t("Name is required"),
           })}
           isInvalid={!!errors.name}
           errorMessage={errors.name?.message}
         />
         <Input
           autoFocus
-          label="Email Address"
+          label={t("Email Address")}
           type="text"
           placeholder=""
           variant="underlined"
           defaultValue={user?.email}
           {...register("email", {
-            required: "Email is required",
+            required: t("Email is required"),
             pattern: {
               value: /^\S+@\S+$/i,
-              message: "Invalid email address",
+              message: t("Invalid email address"),
             },
             onChange: () => trigger("email"),
           })}
@@ -75,75 +78,75 @@ const UpdateProfile = ({onClose}) => {
         />
         <Input
           autoFocus
-          label="Contact "
+          label={t("Contact")}
           type="text"
           placeholder=""
           variant="underlined"
           defaultValue={user?.contact_info}
           {...register("contact_info", {
-            required: "Contact is required",
+            required: t("Contact is required"),
           })}
           isInvalid={!!errors.contact_info}
           errorMessage={errors.contact_info?.message}
         />
         <Input
           autoFocus
-          label="Address"
+          label={t("Address")}
           type="text"
           placeholder=""
           variant="underlined"
           defaultValue={user?.address}
           {...register("address", {
-            required: "Address is required",
+            required: t("Address is required"),
           })}
           isInvalid={!!errors.address}
           errorMessage={errors.address?.message}
         />
         <Input
           autoFocus
-          label="City"
+          label={t("City")}
           type="text"
           placeholder=""
           variant="underlined"
           defaultValue={user?.city}
           {...register("city", {
-            required: "City is required",
+            required: t("City is required"),
           })}
           isInvalid={!!errors.city}
           errorMessage={errors.city?.message}
         />
         <Input
           autoFocus
-          label="State"
+          label={t("State")}
           type="text"
           placeholder=""
           variant="underlined"
           defaultValue={user?.state}
           {...register("state", {
-            required: "State is required",
+            required: t("State is required"),
           })}
           isInvalid={!!errors.state}
           errorMessage={errors.state?.message}
         />
         <Input
           autoFocus
-          label="Profile Photo"
+          label={t("Profile Photo")}
           type="file"
           accept="image/*"
-          placeholder="Upload an image"
+          placeholder={t("Upload an image")}
           variant="underlined"
           {...register("profile_pic", {
-            required: "Profile picture is required",
+            required: t("Profile picture is required"),
           })}
           isInvalid={!!errors.profile_pic}
           errorMessage={errors.profile_pic?.message}
         />
         <div className="p-5 right-0 bottom-0 absolute flex gap-4">
           <Button color="primary" type="submit">
-            Save
+            {t("Save")}
           </Button>
           <Button color="danger" onPress={onClose} variant="light">
-            Close
+            {t("Close")}
           </Button>
         </div>
       </form>

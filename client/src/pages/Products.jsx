@@ -25,6 +25,8 @@ import {
 import { useSelector } from "react-redux";
 import NotFound from "./NotFound";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 const Products = () => {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -45,6 +47,7 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
   const { user } = useSelector((state) => state.auth);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -107,7 +110,7 @@ const Products = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -122,95 +125,95 @@ const Products = () => {
   return (
     <div className="container">
         <Button isIconOnly onClick={() => navigate(-1)} className="my-2"><ArrowLeft/></Button>
-      <h1 className="text-2xl font-bold tracking-widest text-center my-4">Marketplace</h1>
+      <h1 className="text-2xl font-bold tracking-widest text-center my-4">{t("Marketplace")}</h1>
       <div className="hidden sm:flex p-2 flex-col gap-2 justify-center">
         <Input
           isClearable
-          placeholder="Search..."
+          placeholder={t("Search...")}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-xxxl"
         />
         <div className="flex gap-2 flex-wrap justify-center">
           <Select
             variant="bordered"
-            label="Select a category"
+            label={t("Select a category")}
             selectedKeys={[category]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setCategory(e.target.value)}
           >
             {categories.map((item) => (
               <SelectItem key={item.category_id}>
-                {item.category_name}
+                {t(item.category_name)}
               </SelectItem>
             ))}
           </Select>
           <Select
             variant="bordered"
-            label="Select a subcategory"
+            label={t("Select a subcategory")}
             selectedKeys={[subcategory]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setSubcategory(e.target.value)}
           >
             {subcategories.map((item) => (
               <SelectItem key={item.subcategory_id}>
-                {item.subcategory_name}
+                {t(item.subcategory_name)}
               </SelectItem>
             ))}
           </Select>
           <Select
             variant="bordered"
-            label="Timeline"
+            label={t("Timeline")}
             selectedKeys={[order]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setOrder(e.target.value)}
           >
-            <SelectItem key="asc">Oldest</SelectItem>
-            <SelectItem key="desc">Latest</SelectItem>
+            <SelectItem key="asc">{t("Oldest")}</SelectItem>
+            <SelectItem key="desc">{t("Latest")}</SelectItem>
           </Select>
           <Select
             variant="bordered"
-            label="Price"
+            label={t("Price")}
             selectedKeys={[maxPrice]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setMaxPrice(e.target.value)}
           >
-            <SelectItem key={50}>Below 50</SelectItem>
-            <SelectItem key={100}>Below 100</SelectItem>
-            <SelectItem key={500}>Below 500</SelectItem>
-            <SelectItem key={1000}>Below 1000</SelectItem>
+            <SelectItem key={50}>{t("Below 50")}</SelectItem>
+            <SelectItem key={100}>{t("Below 100")}</SelectItem>
+            <SelectItem key={500}>{t("Below 500")}</SelectItem>
+            <SelectItem key={1000}>{t("Below 1000")}</SelectItem>
           </Select>
           <Select
             variant="bordered"
-            label="Quantity"
+            label={t("Quantity")}
             selectedKeys={[maxQuantity]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setMaxQuantity(e.target.value)}
           >
-            <SelectItem key={50}>Below 5</SelectItem>
-            <SelectItem key={100}>Below 10</SelectItem>
-            <SelectItem key={500}>Below 50</SelectItem>
-            <SelectItem key={1000}>Below 100</SelectItem>
+            <SelectItem key={50}>{t("Below 5")}</SelectItem>
+            <SelectItem key={100}>{t("Below 10")}</SelectItem>
+            <SelectItem key={500}>{t("Below 50")}</SelectItem>
+            <SelectItem key={1000}>{t("Below 100")}</SelectItem>
           </Select>
           <Select
             variant="bordered"
-            label="Condition"
+            label={t("Condition")}
             selectedKeys={[condition]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setCondition(e.target.value)}
           >
-            <SelectItem key={"new"}>New</SelectItem>
-            <SelectItem key={"used"}>Used</SelectItem>
+            <SelectItem key={"new"}>{t("New")}</SelectItem>
+            <SelectItem key={"used"}>{t("Used")}</SelectItem>
           </Select>
           <Select
             variant="bordered"
-            label="Status"
+            label={t("Status")}
             selectedKeys={[status]}
             className="max-w-xs w-48 md:w-64"
             onChange={(e) => setStatus(e.target.value)}
           >
-            <SelectItem key={"available"}>Available</SelectItem>
-            <SelectItem key={"sold"}>Sold</SelectItem>
-            <SelectItem key={"rented"}>Rented</SelectItem>
+            <SelectItem key={"available"}>{t("Available")}</SelectItem>
+            <SelectItem key={"sold"}>{t("Sold")}</SelectItem>
+            <SelectItem key={"rented"}>{t("Rented")}</SelectItem>
           </Select>
         </div>
       </div>
@@ -220,7 +223,7 @@ const Products = () => {
           onPress={onOpen}
           className="sm:hidden m-auto w-64"
         >
-          Apply Filters
+          {t("Apply Filters")}
         </Button>
       </div>
       <Modal size={"full"} isOpen={isOpen} onClose={onClose}>
@@ -228,100 +231,100 @@ const Products = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1 pl-10">
-                Filters
+                {t("Filters")}
               </ModalHeader>
               <ModalBody>
                 <div className="flex p-2 flex-col gap-2 justify-center">
                   <Input
                     isClearable
-                    placeholder="Search..."
+                    placeholder={t("Search...")}
                     onChange={(e) => setSearch(e.target.value)}
                     className="max-w-xxxl py-2"
                   />
                   <div className="flex gap-2 flex-col">
                     <Select
                       variant="bordered"
-                      label="Select a category"
+                      label={t("Select a category")}
                       selectedKeys={[category]}
                       onChange={(e) => setCategory(e.target.value)}
                     >
                       {categories.map((item) => (
                         <SelectItem key={item.category_id}>
-                          {item.category_name}
+                          {t(item.category_name)}
                         </SelectItem>
                       ))}
                     </Select>
                     <Select
                       variant="bordered"
-                      label="Select a subcategory"
+                      label={t("Select a subcategory")}
                       selectedKeys={[subcategory]}
                       onChange={(e) => setSubcategory(e.target.value)}
                     >
                       {subcategories.map((item) => (
                         <SelectItem key={item.subcategory_id}>
-                          {item.subcategory_name}
+                          {t(item.subcategory_name)}
                         </SelectItem>
                       ))}
                     </Select>
                     <Select
                       variant="bordered"
-                      label="Timeline"
+                      label={t("Timeline")}
                       selectedKeys={[order]}
                       onChange={(e) => setOrder(e.target.value)}
                     >
-                      <SelectItem key="asc">Oldest</SelectItem>
-                      <SelectItem key="desc">Latest</SelectItem>
+                      <SelectItem key="asc">{t("Oldest")}</SelectItem>
+                      <SelectItem key="desc">{t("Latest")}</SelectItem>
                     </Select>
                     <Select
                       variant="bordered"
-                      label="Price"
+                      label={t("Price")}
                       selectedKeys={[maxPrice]}
                       onChange={(e) => setMaxPrice(e.target.value)}
                     >
-                      <SelectItem key={50}>Below 50</SelectItem>
-                      <SelectItem key={100}>Below 100</SelectItem>
-                      <SelectItem key={500}>Below 500</SelectItem>
-                      <SelectItem key={1000}>Below 1000</SelectItem>
+                      <SelectItem key={50}>{t("Below 50")}</SelectItem>
+                      <SelectItem key={100}>{t("Below 100")}</SelectItem>
+                      <SelectItem key={500}>{t("Below 500")}</SelectItem>
+                      <SelectItem key={1000}>{t("Below 1000")}</SelectItem>
                     </Select>
                     <Select
                       variant="bordered"
-                      label="Quantity"
+                      label={t("Quantity")}
                       selectedKeys={[maxQuantity]}
                       onChange={(e) => setMaxQuantity(e.target.value)}
                     >
-                      <SelectItem key={50}>Below 5</SelectItem>
-                      <SelectItem key={100}>Below 10</SelectItem>
-                      <SelectItem key={500}>Below 50</SelectItem>
-                      <SelectItem key={1000}>Below 100</SelectItem>
+                      <SelectItem key={50}>{t("Below 5")}</SelectItem>
+                      <SelectItem key={100}>{t("Below 10")}</SelectItem>
+                      <SelectItem key={500}>{t("Below 50")}</SelectItem>
+                      <SelectItem key={1000}>{t("Below 100")}</SelectItem>
                     </Select>
                     <Select
                       variant="bordered"
-                      label="Condition"
+                      label={t("Condition")}
                       selectedKeys={[condition]}
                       onChange={(e) => setCondition(e.target.value)}
                     >
-                      <SelectItem key={"new"}>New</SelectItem>
-                      <SelectItem key={"used"}>Used</SelectItem>
+                      <SelectItem key={"new"}>{t("New")}</SelectItem>
+                      <SelectItem key={"used"}>{t("Used")}</SelectItem>
                     </Select>
                     <Select
                       variant="bordered"
-                      label="Status"
+                      label={t("Status")}
                       selectedKeys={[status]}
                       onChange={(e) => setStatus(e.target.value)}
                     >
-                      <SelectItem key={"available"}>Available</SelectItem>
-                      <SelectItem key={"sold"}>Sold</SelectItem>
-                      <SelectItem key={"rented"}>Rented</SelectItem>
+                      <SelectItem key={"available"}>{t("Available")}</SelectItem>
+                      <SelectItem key={"sold"}>{t("Sold")}</SelectItem>
+                      <SelectItem key={"rented"}>{t("Rented")}</SelectItem>
                     </Select>
                   </div>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                  {t("Close")}
                 </Button>
                 <Button color="primary" onPress={onClose}>
-                  Apply
+                  {t("Apply")}
                 </Button>
               </ModalFooter>
             </>
@@ -359,8 +362,8 @@ const Products = () => {
                   variant="bordered"
                   className="absolute right-2 top-2 text-xs sm:text-sm"
                 >
-                  {product.status.charAt(0).toUpperCase() +
-                    product.status.slice(1)}
+                  {t(product.status.charAt(0).toUpperCase() +
+                    product.status.slice(1))}
                 </Chip>
               </CardHeader>
               <CardBody>
@@ -412,22 +415,22 @@ const Products = () => {
                       variant="flat"
                       className="text-xs sm:text-sm"
                     >
-                      {product.category.category_name}
+                      {t(product.category.category_name)}
                     </Chip>
                     <Chip
                       color="warning"
                       variant="flat"
                       className="text-xs sm:text-sm"
                     >
-                      {product.subcategory.subcategory_name}
+                      {t(product.subcategory.subcategory_name)}
                     </Chip>
                     <Chip
                       color="warning"
                       variant="flat"
                       className="text-xs sm:text-sm"
                     >
-                      {product.condition.charAt(0).toUpperCase() +
-                        product.condition.slice(1)}
+                      {t(product.condition.charAt(0).toUpperCase() +
+                        product.condition.slice(1))}
                     </Chip>
                   </div>
                 </div>
@@ -439,7 +442,7 @@ const Products = () => {
                 className="absolute bottom-4 right-4"
                 onClick={() => navigate(`/products/${product.product_id}`)}
               >
-                View
+                {t("View")}
               </Button>
             </Card>
           ))}
@@ -458,7 +461,7 @@ const Products = () => {
             color="secondary"
             onPress={() => setPage((prev) => (prev > 1 ? prev - 1 : prev))}
           >
-            Previous
+            {t("Previous")}
           </Button>
           <Button
             size="sm"
@@ -468,7 +471,7 @@ const Products = () => {
               setPage((prev) => (prev < totalPages ? prev + 1 : prev))
             }
           >
-            Next
+            {t("Next")}
           </Button>
         </div>
       </div>

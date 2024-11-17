@@ -13,12 +13,15 @@ import {
 import { MessageSquareText, SquareArrowOutUpRight, Undo2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Conversations = () => {
   const [conversations, setConversations] = useState();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { onlineUsers } = useSelector((state) => state.messages);
+    const { t } = useTranslation();
+
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -37,7 +40,7 @@ const Conversations = () => {
   const getUserStatus = (id) => {
     const isPresent =
       onlineUsers.find((item) => parseInt(item) === id) !== undefined;
-    return isPresent ? "Online" : "Offline";
+    return isPresent ? t("Online") : t("Offline");
   };
 
   if (loading) {
@@ -45,7 +48,7 @@ const Conversations = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -56,14 +59,14 @@ const Conversations = () => {
   if (!conversations) {
     return (
       <div className="min-h-screen flex flex-col gap-6 items-center justify-center text-xl text-red-500">
-        <p>You do not have any conversations going on at the moment...</p>
+        <p>{t("You do not have any conversations going on at the moment...")}</p>
         <Button
           color="primary"
           className="w-32 md:w-64 mb-8"
           onClick={() => navigate(-1)}
           startContent={<Undo2 />}
         >
-          Go Back
+          {t("Go Back")}
         </Button>
       </div>
     );
@@ -73,7 +76,7 @@ const Conversations = () => {
     <div className="container flex items-center justify-center overflow-hidden">
       <Card className="w-full h-[568px] m-12">
         <CardHeader className="p-5 text-2xl font-bold">
-          Conversations
+          {t("Conversations")}
         </CardHeader>
         <CardBody className="p-10 flex flex-col gap-8">
           {conversations &&
@@ -113,7 +116,7 @@ const Conversations = () => {
             onClick={() => navigate(-1)}
             startContent={<Undo2 />}
           >
-            Go Back
+            {t("Go Back")}
           </Button>
         </CardFooter>
       </Card>

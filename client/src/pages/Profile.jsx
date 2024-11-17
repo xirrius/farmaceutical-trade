@@ -1,16 +1,28 @@
-import { Button, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure } from "@nextui-org/react";
+import { Button, Modal, ModalBody, ModalContent, ModalHeader, Spinner, useDisclosure } from "@nextui-org/react";
 import { MapPin, Undo2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UpdateProfile from "../components/UpdateProfile";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate()
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { t } = useTranslation();
+
 
   if (!user) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner
+          size="lg"
+          label={t("Loading...")}
+          color="danger"
+          labelColor="danger"
+        />
+      </div>
+    );
   }
 
   return (
@@ -26,10 +38,10 @@ const Profile = () => {
             className="w-96 h-96 md:w-48 md:h-48 lg:w-72 lg:h-72 xl:w-96 xl:h-96 rounded-lg mb-4 border-gray-400 border-1 object-cover"
           />
           <h1 className="text-2xl font-semibold mb-1">{user.name}</h1>
-          <p className="text-gray-500 mb-6">User ID: {user.user_id}</p>
+          <p className="text-gray-500 mb-6">{t("User ID:")} {user.user_id}</p>
 
           <div className="mb-3 text-center md:text-left">
-            <p className="text-sm text-gray-400">Created</p>
+            <p className="text-sm text-gray-400">{t("Created")}</p>
             <p className="font-medium text-gray-500">
               {new Date(user.created_at).toLocaleDateString()} -{" "}
               {new Date(user.created_at).toLocaleTimeString()}
@@ -37,7 +49,7 @@ const Profile = () => {
           </div>
 
           <div className="mb-3 text-center md:text-left">
-            <p className="text-sm text-gray-400">Last Updated</p>
+            <p className="text-sm text-gray-400">{t("Last Updated")}</p>
             <p className="font-medium text-gray-500">
               {new Date(user.updated_at).toLocaleDateString()} -{" "}
               {new Date(user.updated_at).toLocaleTimeString()}
@@ -59,19 +71,19 @@ const Profile = () => {
           <div></div>
 
           <div className="space-y-4 py-4">
-            <h1 className="text-lg font-semibold">Contact Information</h1>
+            <h1 className="text-lg font-semibold">{t("Contact Information")}</h1>
             <div className="flex gap-3 items-center">
-              <p className="text-sm text-gray-400 w-32">Email</p>
+              <p className="text-sm text-gray-400 w-32">{t("Email")}</p>
               <p className="text font-medium text-blue-500">{user.email}</p>
             </div>
 
             <div className="flex gap-3 items-center">
-              <p className="text-sm text-gray-400 w-32">Address</p>
+              <p className="text-sm text-gray-400 w-32">{t("Address")}</p>
               <p className="text font-medium">{user.address}</p>
             </div>
 
             <div className="flex gap-3 items-center">
-              <p className="text-sm text-gray-400 w-32">Contact Info</p>
+              <p className="text-sm text-gray-400 w-32">{t("Contact Info")}</p>
               <p className="text font-medium text-blue-500">
                 {user.contact_info}
               </p>
@@ -79,32 +91,32 @@ const Profile = () => {
           </div>
 
           <Button color="secondary" className="w-32 md:w-64" onPress={onOpen}>
-            Update Profile
+            {t("Update Profile")}
           </Button>
 
           <div className="pb-8 pt-4 border-y-1">
-            <h1 className="pb-4 font-bold">Other Options</h1>
+            <h1 className="pb-4 font-bold">{t("Other Options")}</h1>
             <div className=" flex flex-wrap gap-2">
               <Button
                 color="secondary"
                 className=" w-32 md:w-64"
                 onClick={() => navigate("/products/my")}
               >
-                View Listings
+                {t("View My Items")}
               </Button>
               <Button
                 color="secondary"
                 className=" w-32 md:w-64"
                 onClick={() => navigate("/transactions/")}
               >
-                View Transactions
+                {t("View Activity Log")}
               </Button>
               <Button
                 color="secondary"
                 className="w-32 md:w-64"
                 onClick={() => navigate("/rentals/")}
               >
-                View Rentals
+                {t("View Rentals")}
               </Button>
             </div>
           </div>
@@ -114,7 +126,7 @@ const Profile = () => {
             onClick={() => navigate(-1)}
             startContent={<Undo2 />}
           >
-            Go Back
+            {t("Go Back")}
           </Button>
         </div>
       </div>
@@ -128,7 +140,7 @@ const Profile = () => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Update Profile
+                {t("Update Profile")}
               </ModalHeader>
               <ModalBody>
                 <UpdateProfile onClose={onClose} />

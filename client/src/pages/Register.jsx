@@ -7,11 +7,14 @@ import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { registerNewUser } from "../redux/state/authSlice";
+import { useTranslation } from "react-i18next";
+
 
 const Register = () => {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {t} = useTranslation()
 
   const {
     register,
@@ -38,11 +41,11 @@ const Register = () => {
     try {
       delete val.confirmPassword;
       await dispatch(registerNewUser(val)).unwrap(); // unwrap to handle async errors in catch block
-      toast.success("Registration successful!");
+      toast.success(t("Registration successful!"));
       navigate("/");
     } catch (error) {
-      console.log("Error creating user: ", error);
-      toast.error("Invalid credentials. Please try again.");
+      console.log(t("Error creating user: "), error);
+      toast.error(t("Invalid credentials. Please try again."));
     }
   };
 
@@ -51,7 +54,7 @@ const Register = () => {
   return (
     <div className="p-2 h-screen flex justify-center items-center bg-green-300 bg-[url('/bg.jpg')] bg-cover">
       <Card className="backdrop-blur-xl bg-transparent text-white p-3 md:p-10 w-[100%] md:w-[80%] lg:w-[60%]">
-        <CardHeader className="text-2xl">Register Here.</CardHeader>
+        <CardHeader className="text-2xl">{t("Register Here.")}</CardHeader>
         <CardBody>
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -59,14 +62,14 @@ const Register = () => {
           >
             <Input
               isRequired
-              label="Name"
+              label={t("Name")}
               variant="underlined"
               defaultValue=""
               {...register("name", {
-                required: "Name is required",
+                required: t("Name is required"),
                 minLength: {
                   value: 2,
-                  message: "Name must be at least 2 characters",
+                  message: t("Name must be at least 2 characters"),
                 },
               })}
               isInvalid={!!errors.name}
@@ -75,15 +78,15 @@ const Register = () => {
             <div className="flex gap-4 w-full">
               <Input
                 isRequired
-                label="Email"
+                label={t("Email")}
                 type="email"
                 variant="underlined"
                 defaultValue=""
                 {...register("email", {
-                  required: "Email is required",
+                  required: t("Email is required"),
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Invalid email address",
+                    message: t("Invalid email address"),
                   },
                   onChange: () => trigger("email"),
                 })}
@@ -92,14 +95,14 @@ const Register = () => {
               />
               <Input
                 isRequired
-                label="Contact Info"
+                label={t("Contact Info")}
                 type="tel"
                 variant="underlined"
                 {...register("contact_info", {
-                  required: "Contact info is required",
+                  required: t("Contact info is required"),
                   pattern: {
                     value: /^\d+$/,
-                    message: "Contact info must be numeric",
+                    message: t("Contact info must be numeric"),
                   },
                 })}
                 isInvalid={!!errors.contact_info}
@@ -109,9 +112,9 @@ const Register = () => {
 
             <Input
               isRequired
-              label="Address"
+              label={t("Address")}
               variant="underlined"
-              {...register("address", { required: "Address is required" })}
+              {...register("address", { required: t("Address is required") })}
               isInvalid={!!errors.address}
               errorMessage={errors.address?.message}
             />
@@ -119,17 +122,17 @@ const Register = () => {
             <div className="flex gap-4 w-full">
               <Input
                 isRequired
-                label="State"
+                label={t("State")}
                 variant="underlined"
-                {...register("state", { required: "State is required" })}
+                {...register("state", { required: t("State is required") })}
                 isInvalid={!!errors.state}
                 errorMessage={errors.state?.message}
               />
               <Input
                 isRequired
-                label="City"
+                label={t("City")}
                 variant="underlined"
-                {...register("city", { required: "City is required" })}
+                {...register("city", { required: t("City is required") })}
                 isInvalid={!!errors.city}
                 errorMessage={errors.city?.message}
               />
@@ -137,13 +140,13 @@ const Register = () => {
 
             <Input
               isRequired
-              label="Password"
+              label={t("Password")}
               variant="underlined"
               {...register("password", {
-                required: "Password is required",
+                required: t("Password is required"),
                 minLength: {
                   value: 6,
-                  message: "Password must be at least 6 characters",
+                  message: t("Password must be at least 6 characters"),
                 },
                 onChange: () => trigger("password"),
               })}
@@ -168,12 +171,12 @@ const Register = () => {
             <Input
               isRequired
               type={confirmPasswordVisible ? "text" : "password"}
-              label="Confirm Password"
+              label={t("Confirm Password")}
               variant="underlined"
               {...register("confirmPassword", {
-                required: "Confirm Password is required",
+                required: t("Confirm Password is required"),
                 validate: (value) =>
-                  value === password || "Passwords do not match",
+                  value === password || t("Passwords do not match"),
                 onChange: () => trigger("confirmPassword"),
               })}
               isInvalid={!!errors.confirmPassword}
@@ -198,10 +201,10 @@ const Register = () => {
               type="submit"
               color="secondary"
             >
-              {loading ? <Spinner /> : "Register"}
+              {loading ? <Spinner /> : t("Register")}
             </Button>
             <Link to={"/login"} className="hover:underline text-sm">
-              Already have an account? Login now.
+              {t("Already have an account? Login now.")}
             </Link>
           </form>
         </CardBody>

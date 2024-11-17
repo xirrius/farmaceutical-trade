@@ -10,13 +10,15 @@ import {
   CardHeader,
   Chip,
 } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 const UserProductsCarousel = ({ userProducts }) => {
+  const { t } = useTranslation();
 
   return (
     <Swiper
       spaceBetween={1}
-      slidesPerView={userProducts.length > 1? 2: 1}
+      slidesPerView={userProducts?.length > 1 ? 2 : 1}
       navigation={true}
       modules={[Navigation, Pagination]}
       pagination={{
@@ -42,8 +44,7 @@ const UserProductsCarousel = ({ userProducts }) => {
                   variant="bordered"
                   className="text-small"
                 >
-                  {item.status.charAt(0).toUpperCase() +
-                    item.status.slice(1)}
+                  {t(item.status.charAt(0).toUpperCase() + item.status.slice(1))}
                 </Chip>
               </CardHeader>
               <CardBody className="text-small text-default-400">

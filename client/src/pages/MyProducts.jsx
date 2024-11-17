@@ -19,12 +19,14 @@ import {
 import NotFound from "./NotFound";
 import { Pencil, Trash2, Undo2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const MyProducts = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,7 +47,7 @@ const MyProducts = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -70,7 +72,7 @@ const MyProducts = () => {
 
   return (
     <div className="container min-h-screen">
-      <h1 className="text-xl font-bold p-4">My Items</h1>
+      <h1 className="text-xl font-bold p-4">{t("My Items")}</h1>
       <div className="flex flex-wrap gap-4 py-4 px-4 items-center justify-center lg:justify-start">
         {products &&
           products.map((product) => (
@@ -87,8 +89,8 @@ const MyProducts = () => {
                   variant="bordered"
                   className="absolute right-2 top-2 text-xs sm:text-sm"
                 >
-                  {product.status.charAt(0).toUpperCase() +
-                    product.status.slice(1)}
+                  {t(product.status.charAt(0).toUpperCase() +
+                    product.status.slice(1))}
                 </Chip>
               </CardHeader>
               <CardBody>
@@ -140,22 +142,22 @@ const MyProducts = () => {
                       variant="flat"
                       className="text-xs sm:text-sm"
                     >
-                      {product.category.category_name}
+                      {t(product.category.category_name)}
                     </Chip>
                     <Chip
                       color="warning"
                       variant="flat"
                       className="text-xs sm:text-sm"
                     >
-                      {product.subcategory.subcategory_name}
+                      {t(product.subcategory.subcategory_name)}
                     </Chip>
                     <Chip
                       color="warning"
                       variant="flat"
                       className="text-xs sm:text-sm"
                     >
-                      {product.condition.charAt(0).toUpperCase() +
-                        product.condition.slice(1)}
+                      {t(product.condition.charAt(0).toUpperCase() +
+                        product.condition.slice(1))}
                     </Chip>
                   </div>
                 </div>
@@ -183,15 +185,15 @@ const MyProducts = () => {
                 >
                   <Trash2 color="red" />
                 </Button>
-                <Modal backdrop={"opaque"} isOpen={isOpen} onClose={onClose}>
+                <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
                   <ModalContent>
                     {(onClose) => (
                       <>
                         <ModalHeader className="flex flex-col gap-1">
-                          Are you sure?
+                          {t("Are you sure?")}
                         </ModalHeader>
                         <ModalBody>
-                          Are you sure you want to delete this item?
+                          {t("Are you sure you want to delete this item?")}
                         </ModalBody>
                         <ModalFooter>
                           <Button
@@ -199,7 +201,7 @@ const MyProducts = () => {
                             variant="light"
                             onPress={onClose}
                           >
-                            Go back
+                            {t("Go Back")}
                           </Button>
                           <Button
                             color="danger"
@@ -207,7 +209,7 @@ const MyProducts = () => {
                               handleDeleteProduct(product.product_id)
                             }
                           >
-                            Delete
+                            {t("Delete")}
                           </Button>
                         </ModalFooter>
                       </>
@@ -223,7 +225,7 @@ const MyProducts = () => {
         onClick={() => navigate(-1)}
         startContent={<Undo2 />}
       >
-        Go Back
+        {t("Go Back")}
       </Button>
     </div>
   );

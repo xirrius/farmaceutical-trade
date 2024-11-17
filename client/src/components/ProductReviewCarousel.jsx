@@ -17,12 +17,14 @@ import { Star, Trash2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { deleteReview } from "../services/products";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 const ProductReviewCarousel = ({ reviewList }) => {
   const { user } = useSelector((state) => state.auth);
   const [reviews, setReviews] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [slides, setSlides] = useState(3);
+  const {t} = useTranslation()
 
   useEffect(() => {
     const handleResize = () => {
@@ -138,7 +140,7 @@ const ProductReviewCarousel = ({ reviewList }) => {
             </Card>
           </SwiperSlide>
         ))}
-      {reviews.length === 0 && <p className="text-gray-600 pl-10">No Reviews</p>}
+      {reviews.length === 0 && <p className="text-gray-600 pl-10">{t("No Reviews")}</p>}
     </Swiper>
   );
 };

@@ -18,6 +18,7 @@ import {
   User,
 } from "@nextui-org/react";
 import { ArrowLeft, SendHorizontal } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Conversation = () => {
   const { id } = useParams();
@@ -31,6 +32,8 @@ const Conversation = () => {
   );
   const { user } = useSelector((state) => state.auth);
   const messagesEndRef = useRef(null);
+      const { t } = useTranslation();
+
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -56,7 +59,7 @@ const Conversation = () => {
   const getUserStatus = (id) => {
     const isPresent =
       onlineUsers.find((item) => parseInt(item) === id) !== undefined;
-    return isPresent ? "Online" : "Offline";
+    return isPresent ? t("Online") : t("Offline");
   };
 
   const formatTimestamp = (timestamp) => {
@@ -92,7 +95,7 @@ const Conversation = () => {
       <div className="min-h-screen flex items-center justify-center">
         <Spinner
           size="lg"
-          label="Loading..."
+          label={t("Loading...")}
           color="danger"
           labelColor="danger"
         />
@@ -155,7 +158,7 @@ const Conversation = () => {
           <Input
             label=""
             isClearable
-            placeholder="Type a message..."
+            placeholder={t("Type a message...")}
             variant="bordered"
             value={value}
             onValueChange={setValue}
