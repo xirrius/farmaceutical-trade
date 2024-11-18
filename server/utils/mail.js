@@ -19,7 +19,7 @@ const sendEmail = (to, name) => {
         <h2 style="color: #4caf50;">Hi ${name},</h2>
         <p style="margin: 0 0 10px 0;">We're delighted to have you join our platform! 🌱 Thank you for being a part of our community. At Farmaceutical Trade, we aim to simplify agricultural trade and make it seamless for farmers and buyers alike.</p>
         <p style="margin: 0 0 10px 0;">Start exploring your account and discover all the features we have to offer. Together, we can help your farming business thrive!</p>
-        <a href="http://localhost:5173/" style="display: inline-block; padding: 10px 20px; margin-top: 20px; color: #ffffff; background-color: #4caf50; text-decoration: none; border-radius: 5px; font-weight: bold;">Explore Our Platform!</a>
+        <a href="https://farmaceutical-trade.vercel.app/" style="display: inline-block; padding: 10px 20px; margin-top: 20px; color: #ffffff; background-color: #4caf50; text-decoration: none; border-radius: 5px; font-weight: bold;">Explore Our Platform!</a>
         <p style="margin: 20px 0 10px 0;">If you have any questions or need assistance, don't hesitate to reach out. We're here to support you every step of the way!</p>
         <p style="margin: 0 0 10px 0;">Thank you for choosing Farmaceutical Trade.</p>
         <p style="margin: 0;">Best regards,<br>The Farmaceutical Trade Team</p>
