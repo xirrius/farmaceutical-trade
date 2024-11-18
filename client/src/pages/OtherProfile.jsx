@@ -1,4 +1,13 @@
-import { Button, Spinner } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Spinner,
+  useDisclosure,
+} from "@nextui-org/react";
 import { MapPin, Send, Undo2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -7,6 +16,7 @@ import NotFound from "./NotFound";
 import { getUserProducts } from "../services/products";
 import UserProductsCarousel from "../components/UserProductsCarousel";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const OtherProfile = () => {
   const navigate = useNavigate();
@@ -15,6 +25,8 @@ const OtherProfile = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -98,11 +110,37 @@ const OtherProfile = () => {
             className="my-4"
             variant="flat"
             color="secondary"
-            onClick={() => navigate(`/conversations/${profile.user_id}`)}
+            onClick={() => {
+              if (!isAuthenticated) {
+                onOpen();
+                return;
+              }
+              navigate(`/conversations/${profile.user_id}`);
+            }}
             endContent={<Send />}
           >
             {t("Send a message")}
           </Button>
+          <Modal backdrop={"blur"} isOpen={isOpen} onClose={onClose}>
+            <ModalContent>
+              {(onClose) => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    {t("Wait a minute!")}
+                  </ModalHeader>
+                  <ModalBody>{t("You need to sign in to continue.")}</ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" variant="light" onPress={onClose}>
+                      {t("Go Back")}
+                    </Button>
+                    <Button color="primary" onPress={() => navigate("/login")}>
+                      {t("Sign In")}
+                    </Button>
+                  </ModalFooter>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
         </div>
 
         <div className="text-left space-y-4 w-full md:w-[60%]">

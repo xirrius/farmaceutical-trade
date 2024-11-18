@@ -56,8 +56,8 @@ const Layout = () => {
       <Navbar onMenuOpenChange={setIsMenuOpen}>
         <NavbarContent>
           <NavbarBrand className="gap-2 ">
-            <img src="logo.png" alt="" className="w-10" />
-            <p className="font-bold text-inherit">{t("Farmaceutical Trade")}</p>
+            <img src="logo.png" alt="" className="w-8 sm:w-10" />
+            <p className="font-bold text-inherit text-sm sm:text-medium">{t("Farmaceutical Trade")}</p>
           </NavbarBrand>
         </NavbarContent>
 
@@ -100,7 +100,7 @@ const Layout = () => {
           {!isAuthenticated && !loading && (
             <>
               <NavbarItem>
-                <Button as={NavLink} color="primary" to="/login" variant="flat">
+                <Button as={NavLink} color="primary" to="/login" variant="flat" className="text-xs sm:text-medium">
                   {t("Sign In")}
                 </Button>
               </NavbarItem>

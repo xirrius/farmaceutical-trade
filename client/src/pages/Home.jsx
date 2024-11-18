@@ -20,7 +20,7 @@ const Home = () => {
             <source src="./hero.mp4" type="video/mp4" />
           </video>
           <div
-            className="absolute top-0 w-full h-full text-white p-5 pl-12 flex items-center"
+            className="absolute top-0 w-full h-full text-white p-5 sm:pl-12 flex items-center"
             style={{
               background:
                 "linear-gradient(0deg, rgba(0,0,0,0.9544159544159544) 1%, rgba(0,0,0,0) 100%)",
@@ -33,7 +33,7 @@ const Home = () => {
               <p className="tracking-widest">
                 {t("Buy, sell, and rent agricultural assets with ease.")}
               </p>
-              <div className="ml-5 flex gap-12 mt-5">
+              <div className="sm:ml-5 flex gap-8 sm:gap-12 mt-5">
                 <Button
                   variant="shadow"
                   color="danger"
@@ -105,7 +105,7 @@ const Home = () => {
             className="w-full h-[400px] object-cover"
           />
           <div
-            className="absolute top-0 w-full h-full text-white p-5 pl-12 flex items-center justify-center"
+            className="absolute top-0 w-full h-full text-white p-5 flex items-center justify-center"
             style={{
               background: "rgba(0,0,0,0.5)",
             }}
@@ -114,7 +114,7 @@ const Home = () => {
               <h1 className="text-3xl sm:text-5xl leading-tight tracking-wider italic text-center">
                 {t("Start Trading Smarter Today!")}
               </h1>
-              <div className="flex gap-12 mt-5 justify-center">
+              <div className="flex gap-8 sm:gap-12 mt-5 justify-center">
                 <Button
                   variant="shadow"
                   color="success"
