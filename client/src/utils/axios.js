@@ -1,12 +1,12 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://farmaceutical-trade.onrender.com",
   timeout: 10000,
 });
 
 const authInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://farmaceutical-trade.onrender.com",
   timeout: 10000,
 });
 

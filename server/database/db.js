@@ -10,7 +10,7 @@ const Pool = require("pg").Pool;
 
 // PRODUCTION MODE
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Use connectionString instead of separate keys
+  connectionString: process.env.DATABASE_URL, 
   ssl: {
     rejectUnauthorized: false, // Required for connecting to Render's managed PostgreSQL
   },

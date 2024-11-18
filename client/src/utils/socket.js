@@ -17,7 +17,7 @@ export const initSocketListeners = () => {
   }
 
   // Initialize the socket connection with the user ID query only after authentication
-  socket = io("http://localhost:5000", {
+  socket = io("https://farmaceutical-trade.onrender.com", {
     query: { userId },
   });
 
