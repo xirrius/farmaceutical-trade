@@ -1,5 +1,7 @@
 require("dotenv").config();
 require("express-async-errors");
+const path = require("path");
+const fs = require("fs");
 const express = require("express");
 
 // extra security packages
