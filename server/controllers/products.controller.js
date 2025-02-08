@@ -96,12 +96,6 @@ const getProducts = async (req, res) => {
     countQuery += ` AND subcategory_id = $${countParams.length + 1}`;
     countParams.push(subcategory);
   }
-  if (subcategory) {
-    baseQuery += ` AND subcategory_id = $${queryParams.length + 1}`;
-    queryParams.push(subcategory);
-    countQuery += ` AND subcategory_id = $${countParams.length + 1}`;
-    countParams.push(subcategory);
-  }
   if (condition) {
     baseQuery += ` AND LOWER(condition) = LOWER($${queryParams.length + 1})`;
     queryParams.push(condition);
@@ -139,6 +133,8 @@ const getProducts = async (req, res) => {
     queryParams.length + 2
   }`;
   queryParams.push(limitNum, offset);
+
+  console.log(baseQuery);
 
   const result = await pool.query(baseQuery, queryParams);
   const totalResult = await pool.query(countQuery, countParams);

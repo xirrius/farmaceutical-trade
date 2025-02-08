@@ -21,6 +21,13 @@ const messageRoutes = require("./routes/messages.router");
 app.use(express.json());
 app.use(cors());
 
+const publicDir = path.join(__dirname, "public");
+
+if (!fs.existsSync(publicDir)) {
+  fs.mkdirSync(publicDir);
+  console.log("Public directory created.");
+}
+
 //routes
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
