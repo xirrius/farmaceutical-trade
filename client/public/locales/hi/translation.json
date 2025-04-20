@@ -216,6 +216,27 @@
   "Looks like you've found the doorway to the great nothing": "ऐसा लगता है कि आपने महान कुछ नहीं के द्वार को ढूंढ लिया है",
   "The content you're looking for doesn't exist. Either it was removed, or you mistyped the link.": "जिस सामग्री को आप ढूंढ रहे हैं, वह मौजूद नहीं है। या तो इसे हटा दिया गया है, या आपने लिंक में गलती से टाइप किया है।",
   "Sorry about that! Please visit our homepage to get where you need to go.": "इसके लिए खेद है! कृपया हमारी होमपेज पर जाएं ताकि आप जहाँ जाना चाहते हैं, वहाँ पहुँच सकें।",
-  "Go back to Homepage": "होमपेज पर वापस जाएं"
+  "Go back to Homepage": "होमपेज पर वापस जाएं",
+  "Get Medicine Recommendation": "दवा की सिफारिश प्राप्त करें",
+  "Type is required": "प्रकार आवश्यक है",
+  "Type": "प्रकार",
+  "Crop": "फ़सल",
+  "Animal": "पशु",
+  "Region": "क्षेत्र",
+  "Region is required": "क्षेत्र आवश्यक है",
+  "Crop is required": "फ़सल आवश्यक है",
+  "Season is required": "मौसम आवश्यक है",
+  "Season": "मौसम",
+  "Animal is required": "पशु आवश्यक है",
+  "Age Group is required": "आयु समूह आवश्यक है",
+  "Age Group": "आयु समूह",
+  "Symptom": "लक्षण",
+  "Symptom is required": "लक्षण आवश्यक है",
+  "Disease (if known)": "रोग",
+  "Get Recommendation": "सिफारिश प्राप्त करें",
+  "Recommendation Result": "सिफारिश परिणाम",
+  "Medicine": "दवा",
+  "Get Smart Medicine Recommendations for Crops & Animals": "फसलों और जानवरों के लिए स्मार्ट दवा सिफारिशें प्राप्त करें",
+  "Try the Model": "मॉडल आज़माएं"
 }
 

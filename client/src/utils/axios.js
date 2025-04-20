@@ -2,7 +2,7 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "https://farmaceutical-trade.onrender.com",
-  timeout: 10000,
+  timeout: 60000,
 });
 
 const authInstance = axios.create({

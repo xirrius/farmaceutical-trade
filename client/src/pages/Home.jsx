@@ -8,7 +8,7 @@ const Home = () => {
   const {t} = useTranslation()
   return (
     <div>
-      <div>
+      <div className="pattern-bg">
         <div className="relative">
           <video
             src="./hero.mp4"
@@ -52,7 +52,7 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center mt-14">
+        <div className="flex flex-col items-center my-20">
           <h1 className="text-3xl mb-5 leading-tight tracking-wider">
             {t("What We Offer")}
           </h1>
@@ -66,7 +66,9 @@ const Home = () => {
                   {t("Marketplace with Personalized Filters")}
                 </h4>
                 <p className="text-gray-400 tracking-wide">
-                  {t("Browse a wide variety of agricultural assets and filter products based on your needs such as price, category, and availability.")}
+                  {t(
+                    "Browse a wide variety of agricultural assets and filter products based on your needs such as price, category, and availability."
+                  )}
                 </p>
               </CardBody>
             </Card>
@@ -79,7 +81,9 @@ const Home = () => {
                   {t("Activity Log")}
                 </h4>
                 <p className="text-gray-400 tracking-wide">
-                  {t("Keep track of your buying, selling, and rental activities in one place.")}
+                  {t(
+                    "Keep track of your buying, selling, and rental activities in one place."
+                  )}
                 </p>
               </CardBody>
             </Card>
@@ -92,13 +96,23 @@ const Home = () => {
                   {t("Rental Logs")}
                 </h4>
                 <p className="text-gray-400 tracking-wide">
-                  {t("Simplify renting with detailed logs and status tracking.")}
+                  {t(
+                    "Simplify renting with detailed logs and status tracking."
+                  )}
                 </p>
               </CardBody>
             </Card>
           </div>
         </div>
-        <div className="mt-16 relative">
+        <div className="bg-green-100 text-center py-12 px-4 rounded-xl mt-10 shadow md:mx-20 mx-10">
+          <h2 className="text-2xl md:text-3xl font-semibold text-green-800 mb-6">
+            {t("Get Smart Medicine Recommendations for Crops & Animals")}
+          </h2>
+            <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition" onClick={() => navigate("/predict")}>
+              {t("Try the Model")}
+            </button>
+        </div>
+        <div className="mt-24 relative">
           <img
             src="./cta.jpg"
             alt=""

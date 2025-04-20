@@ -22,10 +22,16 @@ import Conversation from "./components/Conversation.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import EditProduct from "./pages/EditProduct.jsx";
+import PredictModel from "./pages/PredictModel.jsx";
+import { wakeModel } from "./utils/model-warmup.js";
 
 const App = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    wakeModel();
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -63,6 +69,7 @@ const App = () => {
             />
             <Route path="/profile/:id" element={<OtherProfile />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/predict" element={<PredictModel />} />
             <Route
               path="/products/my"
               element={isAuthenticated ? <MyProducts /> : <NotFound />}
@@ -98,7 +105,7 @@ const App = () => {
               element={isAuthenticated ? <Conversation /> : <NotFound />}
             />
           </Route>
-          <Route path="*" element={<NotFound/>}/>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </>
