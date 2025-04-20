@@ -18,6 +18,7 @@ const categoryRoutes = require("./routes/categories.router");
 const transactionRoutes = require("./routes/transactions.router");
 const rentalRoutes = require("./routes/rentals.router");
 const messageRoutes = require("./routes/messages.router");
+const modelRoute = require("./routes/model.router");
 
 //middlewares
 app.use(express.json());
@@ -31,12 +32,13 @@ if (!fs.existsSync(publicDir)) {
 }
 
 //routes
-app.use("/users", userRoutes);
 app.use("/products", productRoutes);
+app.use("/users", userRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/transactions", transactionRoutes);
 app.use("/rentals", rentalRoutes);
 app.use("/messages", messageRoutes);
+app.use("/predict", modelRoute);
 
 //error handler
 app.use(notFound);
@@ -51,3 +53,5 @@ const start = async () => {
 };
 
 start();
+
+

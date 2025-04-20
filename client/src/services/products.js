@@ -36,7 +36,7 @@ export const getProducts = async ({
     maxPrice,
     maxQuantity,
     }).toString();
-    const response = await axiosInstance.get(`/products?${queryParams}`);
+    const response = await axiosInstance.get(`/products?${queryParams}`); 
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || "Error fetching products");
